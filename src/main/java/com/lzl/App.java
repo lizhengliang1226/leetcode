@@ -2,10 +2,8 @@ package com.lzl;
 
 import com.lzl.util.LeetCodeUtil;
 import com.lzl.util.ListNode;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Hello world!
@@ -58,9 +56,11 @@ public class App {
         if (target > nums[l]) return l + 1;
         return l;
     }
-    private void print(String... strs){
-        System.out.println("====="+Arrays.toString(strs)+"=====");
+
+    private void print(String... strs) {
+        System.out.println("=====" + Arrays.toString(strs) + "=====");
     }
+
     public static void main(String[] args) {
         System.out.println("Hello World!");
         final App app = new App();
@@ -85,51 +85,154 @@ public class App {
 //        System.out.println(app.divide(16,-3));
 //    app.nextPermutation(LeetCodeUtil.getIntAry(6,1,LeetCodeUtil.NO_SORT));
 //        LeetCodeUtil.traverseAry(app.searchRange(new int[]{1}, 1));
-    app.combinationSum(new int[]{2,3,6,7},7);
+        app.combinationSum(new int[]{2, 3, 6, 7}, 7);
+    }
+
+    /**
+     * 77. 组合
+     * 给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+     * <p>
+     * 你可以按 任何顺序 返回答案。
+     * <p>
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：n = 4, k = 2
+     * 输出：
+     * [
+     * [2,4],
+     * [3,4],
+     * [2,3],
+     * [1,2],
+     * [1,3],
+     * [1,4],
+     * ]
+     * 示例 2：
+     * <p>
+     * 输入：n = 1, k = 1
+     * 输出：[[1]]
+     *
+     * @param n
+     * @param k
+     * @return
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        return null;
+    }
+
+    /**
+     * 40. 组合总和 II
+     * 给定一个候选人编号的集合 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+     * <p>
+     * candidates 中的每个数字在每个组合中只能使用 一次 。
+     * <p>
+     * 注意：解集不能包含重复的组合。
+     * <p>
+     * <p>
+     * <p>
+     * 示例 1:
+     * <p>
+     * 输入: candidates = [10,1,2,7,6,1,5], target = 8,
+     * 输出:
+     * [
+     * [1,1,6],
+     * [1,2,5],
+     * [1,7],
+     * [2,6]
+     * ]
+     * 示例 2:
+     * <p>
+     * 输入: candidates = [2,5,2,1,2], target = 5,
+     * 输出:
+     * [
+     * [1,2,2],
+     * [5]
+     * ]
+     *
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Deque<Integer> path = new ArrayDeque<Integer>();
+        int l = candidates.length;
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        // 排序数组、暂存值数组、目标值、长度、结果集、开始位置
+        // 这个开始位置是为了选取元素不重复，不能选取相同元素的时候要设置，也可以用used数组代替
+        // ，在循环里面判断就好但会浪费空间
+        dfs2(candidates, path, target, l, res, 0);
+        return res;
+    }
+
+    private void dfs2(int[] candidates,
+                      Deque<Integer> path,
+                      int target,
+                      int l,
+                      List<List<Integer>> res,
+                      int begin) {
+        // 目标值为0说明已找到，保存值
+        if (target == 0) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        // 从begin开始遍历，就是为了之前选取过的数就不要再去取了，如果从0开始又会选到之前选过的数
+        for (int i = begin; i < l; i++) {
+            // 如果当前数减去后已经小于0了，后面的数就更不可能得到结果了
+            if (target - candidates[i] < 0) break;
+            // 同一层后面的与前面相同，那一定使用过了会重复
+            if (i > begin && candidates[i - 1] == candidates[i]) continue;
+            // 上面两个都没结束，说明该数被减后大于0且还没被使用过且与前一个数不相同也就是不会重复
+            path.addLast(candidates[i]);
+            dfs2(candidates, path, target - candidates[i], l, res, i + 1);
+            path.removeLast();
+        }
     }
 
     /**
      * 47. 全排列 II
      * 给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * 示例 1：
-     *
+     * <p>
      * 输入：nums = [1,1,2]
      * 输出：
      * [[1,1,2],
-     *  [1,2,1],
-     *  [2,1,1]]
+     * [1,2,1],
+     * [2,1,1]]
      * 示例 2：
-     *
+     * <p>
      * 输入：nums = [1,2,3]
      * 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+     *
      * @param nums
      * @return
      */
     public List<List<Integer>> permuteUnique(int[] nums) {
-        Deque<Integer> path=new ArrayDeque<>();
-        boolean[] used=new boolean[nums.length];
-        int l=nums.length;
-        List<List<Integer>> res=new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>();
+        boolean[] used = new boolean[nums.length];
+        int l = nums.length;
+        List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        backtrack1(nums,l,used,path,res,0);
+        backtrack1(nums, l, used, path, res, 0);
         return null;
     }
 
     private void backtrack1(int[] nums, int l, boolean[] used, Deque<Integer> path, List<List<Integer>> res, int depth) {
-        if(depth==l){
+        if (depth == l) {
             res.add(new ArrayList<>(path));
             return;
         }
         for (int i = 0; i < l; i++) {
-            if(used[i]||(i>0&&nums[i]==nums[i-1])){
+            if (used[i] || (i > 0 && nums[i] == nums[i - 1])) {
                 continue;
             }
             path.addLast(nums[i]);
             used[i] = true;
-            backtrack1(nums,l,used,path,res,depth+1);
+            backtrack1(nums, l, used, path, res, depth + 1);
             used[i] = false;
             path.removeLast();
         }
@@ -138,19 +241,19 @@ public class App {
     /**
      * 46. 全排列
      * 给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * 示例 1：
-     *
+     * <p>
      * 输入：nums = [1,2,3]
      * 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
      * 示例 2：
-     *
+     * <p>
      * 输入：nums = [0,1]
      * 输出：[[0,1],[1,0]]
      * 示例 3：
-     *
+     * <p>
      * 输入：nums = [1]
      * 输出：[[1]]
      *
@@ -159,23 +262,23 @@ public class App {
      */
     public List<List<Integer>> permute(int[] nums) {
         Deque<Integer> path = new ArrayDeque();
-        boolean[] used=new boolean[nums.length];
-        int l=nums.length;
+        boolean[] used = new boolean[nums.length];
+        int l = nums.length;
         List<List<Integer>> res = new ArrayList<List<Integer>>();
-        dfs1(nums,l,0,used,res,path);
+        dfs1(nums, l, 0, used, res, path);
         return res;
     }
 
     private void dfs1(int[] nums, int l, int depth, boolean[] used, List<List<Integer>> res, Deque<Integer> path) {
-        if(depth==l){
+        if (depth == l) {
             res.add(new ArrayList<Integer>(path));
             return;
         }
         for (int i = 0; i < l; i++) {
-            if(!used[i]){
+            if (!used[i]) {
                 path.addLast(nums[i]);
                 used[i] = true;
-                dfs1(nums,l,depth+1,used,res,path);
+                dfs1(nums, l, depth + 1, used, res, path);
                 path.removeLast();
                 used[i] = false;
             }
@@ -187,15 +290,15 @@ public class App {
      * 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，
      * 找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，
      * 并以列表形式返回。你可以按 任意顺序 返回这些组合。
-     *
+     * <p>
      * candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。
-     *
+     * <p>
      * 对于给定的输入，保证和为 target 的不同组合数少于 150 个。
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * 示例 1：
-     *
+     * <p>
      * 输入：candidates = [2,3,6,7], target = 7
      * 输出：[[2,2,3],[7]]
      * 解释：
@@ -203,52 +306,53 @@ public class App {
      * 7 也是一个候选， 7 = 7 。
      * 仅有这两种组合。
      * 示例 2：
-     *
+     * <p>
      * 输入: candidates = [2,3,5], target = 8
      * 输出: [[2,2,2,2],[2,3,3],[3,5]]
      * 示例 3：
-     *
+     * <p>
      * 输入: candidates = [2], target = 1
      * 输出: []
+     *
      * @param candidates
      * @param target
      * @return
      */
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> res=new ArrayList<>();
-        List<Integer> path=new ArrayList<>();
-        dfs(target,candidates,res,path,0);
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        dfs(target, candidates, res, path, 0);
         return res;
     }
 
     private void dfs(int target, int[] candidates, List<List<Integer>> res, List<Integer> path, int i) {
         // 已经到最后一个位置了，不能再忘下了，返回
-        if(i== candidates.length){
+        if (i == candidates.length) {
             return;
         }
         // 找到了目标集，返回
-        if(target==0){
+        if (target == 0) {
             res.add(new ArrayList<>(path));
-            return ;
+            return;
         }
         // 直接跳过,这里相当于用跳过来倒序遍历数组，然后往下走开始算满足条件的值
-        print("1dfs压栈","索引"+i);
-        dfs(target,candidates,res,path,i+1);
-        print("1dfs出栈","索引"+i);
-        if(target-candidates[i]>=0){
+        print("1dfs压栈", "索引" + i);
+        dfs(target, candidates, res, path, i + 1);
+        print("1dfs出栈", "索引" + i);
+        if (target - candidates[i] >= 0) {
             // 如果满足条件，则加入暂存数组
             path.add(candidates[i]);
             // 继续遍历，这时候他又会走一遍上面的那个dfs，
             // 然后一直把i加到数组的长度才会返回，然后又从数组末端找符合条件的
-            print("2dfs压栈","索引"+i);
-            dfs(target-candidates[i],candidates,res,path,i);
-            print("2dfs出栈","索引"+i);
+            print("2dfs压栈", "索引" + i);
+            dfs(target - candidates[i], candidates, res, path, i);
+            print("2dfs出栈", "索引" + i);
 
             // 走到这里后说明在当前树下找不到符合条件的，要回溯去找其他的，所以删除最后一个元素，然后返回
             // 由于返回的时候就走到上一个dfs处，所以那个变量i就自动减一了，也就完成了倒叙遍历
-            path.remove(path.size()-1);
+            path.remove(path.size() - 1);
         } //   /|
-          //  ||
+        //  ||
         print("dfs出栈");
         // 这个位置说明找不到符合条件的，然后就会返回，走到上面那行
     }
@@ -304,31 +408,31 @@ public class App {
      * @return
      */
     public String countAndSay(int n) {
-        String str="1";
+        String str = "1";
         // 从第二项开始生成
-        for (int i = 2; i <=n; i++) {
+        for (int i = 2; i <= n; i++) {
             // 用来存储生成的串
-             StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             // 读取的字符位置
-             int pos=0;
-             // 开始读取的位置
-            int start=0;
+            int pos = 0;
+            // 开始读取的位置
+            int start = 0;
             // 还没读取完就一直读
-            while(pos<str.length()) {
+            while (pos < str.length()) {
                 // 还没读取完，当前字符与开始字符相同
-                while(pos<str.length()&&str.charAt(pos)==str.charAt(start)) {
+                while (pos < str.length() && str.charAt(pos) == str.charAt(start)) {
                     // 出现的次数加一
                     pos++;
                 }
                 // 读到了不相同的字符，结束，求出那个开始字符出现的次数
-                int times=pos-start;
+                int times = pos - start;
                 // 将此次字符出现的次数和字符添加进串
                 sb.append(times).append(str.charAt(start));
                 // 重置开始位置为当前读取的位置
-                start=pos;
+                start = pos;
             }
             // 循环完全结束，字符重新生成完成，重新赋值
-            str=sb.toString();
+            str = sb.toString();
         }
         return str;
     }
