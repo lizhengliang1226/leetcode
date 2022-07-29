@@ -118,7 +118,24 @@ public class App {
      * @return
      */
     public List<List<Integer>> combine(int n, int k) {
-        return null;
+        List<List<Integer>> res = new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>();
+        dfs3(n, k, path,res,1);
+        return res;
+    }
+
+    private void dfs3(int n, int k, Deque<Integer> path, List<List<Integer>> res, int begin) {
+        if(path.size() ==k){
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = begin; i <= n - (k - path.size()) + 1; i++) {
+            int num=i;
+            if(i==n)break;
+            path.addLast(num);
+            dfs3(n, k, path,res,i+1);
+            path.removeLast();
+        }
     }
 
     /**
