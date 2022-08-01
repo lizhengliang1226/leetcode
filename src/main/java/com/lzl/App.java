@@ -85,7 +85,7 @@ public class App {
 //        System.out.println(app.divide(16,-3));
 //    app.nextPermutation(LeetCodeUtil.getIntAry(6,1,LeetCodeUtil.NO_SORT));
 //        LeetCodeUtil.traverseAry(app.searchRange(new int[]{1}, 1));
-        app.subsets(new int[]{1,2,3});
+        System.out.println(app.getPermutation(4, 9));
     }
 
     /**
@@ -121,8 +121,32 @@ public class App {
      * @return
      */
     public String getPermutation(int n, int k) {
-
+        StringBuilder sb = new StringBuilder();
+        boolean[] used=new boolean[n];
+        dfs6(n,k,sb,used);
+        return res;
     }
+    private String res="";
+    private int num=0;
+    private void dfs6(int n, int k, StringBuilder sb, boolean[] used) {
+        if(sb.length()==n){
+            if((num+=1)==k) {
+                res=sb.toString();
+                return ;
+            }
+        }
+        for (int i = 1; i <= n; i++) {
+            if(num==k)break;
+            if(!used[i-1]){
+                sb.append(i);
+                used[i-1] = true;
+                dfs6(n,k,sb,used);
+                used[i-1] = false;
+                sb.deleteCharAt(sb.length()-1);
+            }
+        }
+    }
+
     /**
      * 90. 子集 II
      * 给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
