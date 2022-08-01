@@ -85,7 +85,45 @@ public class App {
 //        System.out.println(app.divide(16,-3));
 //    app.nextPermutation(LeetCodeUtil.getIntAry(6,1,LeetCodeUtil.NO_SORT));
 //        LeetCodeUtil.traverseAry(app.searchRange(new int[]{1}, 1));
-        app.combinationSum(new int[]{2, 3, 6, 7}, 7);
+        app.subsets(new int[]{1,2,3});
+    }
+
+    /**
+     * 78. 子集
+     * 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+     * <p>
+     * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+     * <p>
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：nums = [1,2,3]
+     * 输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+     * 示例 2：
+     * <p>
+     * 输入：nums = [0]
+     * 输出：[[],[0]]
+     *
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>();
+        final int length = nums.length;
+        // 取模：x%(2^n)=x&(2^n-1)  也就是一个数如果是2的幂次，则对他取模相当于位运算
+        dfs4(length, path, nums, res, 0);
+        return res;
+    }
+
+    private void dfs4(int length, Deque<Integer> path, int[] nums, List<List<Integer>> res, int begin) {
+        res.add(new ArrayList<>(path));
+        for (int i = begin; i < length; i++) {
+            path.addLast(nums[i]);
+            dfs4(length, path, nums, res, i + 1);
+            path.removeLast();
+        }
     }
 
     /**
@@ -120,20 +158,20 @@ public class App {
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> res = new ArrayList<>();
         Deque<Integer> path = new ArrayDeque<>();
-        dfs3(n, k, path,res,1);
+        dfs3(n, k, path, res, 1);
         return res;
     }
 
     private void dfs3(int n, int k, Deque<Integer> path, List<List<Integer>> res, int begin) {
-        if(path.size() ==k){
+        if (path.size() == k) {
             res.add(new ArrayList<>(path));
             return;
         }
         for (int i = begin; i <= n - (k - path.size()) + 1; i++) {
-            int num=i;
-            if(i==n)break;
+            int num = i;
+            if (i == n) break;
             path.addLast(num);
-            dfs3(n, k, path,res,i+1);
+            dfs3(n, k, path, res, i + 1);
             path.removeLast();
         }
     }
