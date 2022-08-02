@@ -12,6 +12,7 @@ import java.util.*;
  */
 
 public class App {
+
     private ModuleClass app;
 
     /**
@@ -58,7 +59,7 @@ public class App {
     }
 
     private void print(String... strs) {
-        System.out.println("=====" + Arrays.toString(strs) + "=====");
+        System.out.println( Arrays.toString(strs));
     }
 
     public static void main(String[] args) {
@@ -85,15 +86,97 @@ public class App {
 //        System.out.println(app.divide(16,-3));
 //    app.nextPermutation(LeetCodeUtil.getIntAry(6,1,LeetCodeUtil.NO_SORT));
 //        LeetCodeUtil.traverseAry(app.searchRange(new int[]{1}, 1));
-        System.out.println(app.getPermutation(4, 9));
+        System.out.println(app.restoreIpAddresses("101023"));
+    }
+
+    /**
+     * 93. 复原 IP 地址
+     * 有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+     * <p>
+     * 例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312"
+     * 和 "192.168@1.1" 是 无效 IP 地址。
+     * 给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能的有效 IP 地址，
+     * 这些地址可以通过在 s 中插入 '.' 来形成。你 不能 重新排序或删除 s 中的任何数字。
+     * 你可以按 任何 顺序返回答案。
+     * <p>
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：s = "25525511135"
+     * 输出：["255.255.11.135","255.255.111.35"]
+     * 示例 2：
+     * <p>
+     * 输入：s = "0000"
+     * 输出：["0.0.0.0"]
+     * 示例 3：
+     * <p>
+     * 输入：s = "101023"
+     * 输出：["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+     *
+     * @param s
+     * @return
+     */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<>();
+        int[] path = new int[4];
+        dfs7(path, res, s, 0, 0);
+        return res;
+    }
+
+    private void dfs7(int[] path, List<String> res, String s, int segId, int begin) {
+        print("ip段数："+segId+"段","搜素字符起始位置："+begin,"此时ip值："+Arrays.toString(path));
+        if (segId == 4) {
+            print("已找满四段ip，此段ip为：",Arrays.toString(path));
+            if (begin == s.length()) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 4; i++) {
+                    sb.append(path[i]);
+                    if (i != 3) {
+                        sb.append(".");
+                    }
+                }
+                print("找到结果集",Arrays.toString(path));
+                res.add(sb.toString());
+            }
+            return;
+        }
+        if (begin == s.length()) {
+            return;
+        }
+        if (s.charAt(begin) == '0') {
+            print("该位置为0，直接作为此段ip值，不再搜索");
+            path[segId] = 0;
+            print("此时ip值："+Arrays.toString(path));
+            print("dfs7压栈","取字符位置："+(begin+1),"ip段："+(segId+1));
+            dfs7(path, res, s, segId + 1, begin + 1);
+            print("dfs7出栈","回溯字符位置："+begin,"ip段："+segId+"段");
+
+        }
+        // 某一段的ip地址的暂存值
+        int addr = 0;
+        for (int i = begin; i < s.length(); i++) {
+            addr = addr * 10 + (s.charAt(i) - '0');
+            print("取到地址addr：", String.valueOf(addr));
+            if (addr > 0 && addr <= 0xff) {
+                path[segId] = addr;
+                print("当前ip值：",Arrays.toString(path));
+                print("dfs7压栈","取字符位置："+i+"","ip段："+segId+"");
+                dfs7(path, res, s, segId + 1, i + 1);
+                print("dfs7出栈","回溯字符位置："+i,"下次取值位置："+(i+1),"ip段："+segId+"段");
+            } else {
+                break;
+            }
+        }
+        print("dfs出栈");
     }
 
     /**
      * 60. 排列序列
      * 给出集合 [1,2,3,...,n]，其所有元素共有 n! 种排列。
-     *
+     * <p>
      * 按大小顺序列出所有排列情况，并一一标记，当 n = 3 时, 所有排列如下：
-     *
+     * <p>
      * "123"
      * "132"
      * "213"
@@ -101,48 +184,53 @@ public class App {
      * "312"
      * "321"
      * 给定 n 和 k，返回第 k 个排列。
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * 示例 1：
-     *
+     * <p>
      * 输入：n = 3, k = 3
      * 输出："213"
      * 示例 2：
-     *
+     * <p>
      * 输入：n = 4, k = 9
      * 输出："2314"
      * 示例 3：
-     *
+     * <p>
      * 输入：n = 3, k = 1
      * 输出："123"
+     *
      * @param n
      * @param k
      * @return
      */
     public String getPermutation(int n, int k) {
         StringBuilder sb = new StringBuilder();
-        boolean[] used=new boolean[n];
-        dfs6(n,k,sb,used);
+        boolean[] used = new boolean[n];
+        dfs6(n, k, sb, used);
         return res;
     }
-    private String res="";
-    private int num=0;
+
+    private String res = "";
+    private int num = 0;
+
+    // 7 14 17 21 27 28 35 37 42 47 49 56 57 63 67 70 71 72 73
+    // 74 75 76 77 78 79 84 87 91 97
     private void dfs6(int n, int k, StringBuilder sb, boolean[] used) {
-        if(sb.length()==n){
-            if((num+=1)==k) {
-                res=sb.toString();
-                return ;
+        if (sb.length() == n) {
+            if ((num += 1) == k) {
+                res = sb.toString();
+                return;
             }
         }
         for (int i = 1; i <= n; i++) {
-            if(num==k)break;
-            if(!used[i-1]){
+            if (num == k) break;
+            if (!used[i - 1]) {
                 sb.append(i);
-                used[i-1] = true;
-                dfs6(n,k,sb,used);
-                used[i-1] = false;
-                sb.deleteCharAt(sb.length()-1);
+                used[i - 1] = true;
+                dfs6(n, k, sb, used);
+                used[i - 1] = false;
+                sb.deleteCharAt(sb.length() - 1);
             }
         }
     }
@@ -150,37 +238,38 @@ public class App {
     /**
      * 90. 子集 II
      * 给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
-     *
+     * <p>
      * 解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * 示例 1：
-     *
+     * <p>
      * 输入：nums = [1,2,2]
      * 输出：[[],[1],[1,2],[1,2,2],[2],[2,2]]
      * 示例 2：
-     *
+     * <p>
      * 输入：nums = [0]
      * 输出：[[],[0]]
+     *
      * @param nums
      * @return
      */
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        List<List<Integer>> res=new ArrayList<>();
-        Deque<Integer> path=new ArrayDeque<>();
+        List<List<Integer>> res = new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>();
         final int l = nums.length;
         Arrays.sort(nums);
-        dfs5(path, nums, res,l,0);
+        dfs5(path, nums, res, l, 0);
         return res;
     }
 
     private void dfs5(Deque<Integer> path, int[] nums, List<List<Integer>> res, int l, int begin) {
         res.add(new ArrayList<>(path));
         for (int i = begin; i < l; i++) {
-            if(i>begin&&nums[i]==nums[i-1])continue;
+            if (i > begin && nums[i] == nums[i - 1]) continue;
             path.addLast(nums[i]);
-            dfs5(path, nums, res, l, i+1);
+            dfs5(path, nums, res, l, i + 1);
             path.removeLast();
         }
     }
