@@ -12,7 +12,8 @@ import java.util.*;
  */
 
 public class App {
-
+    private int[] x=new int[]{0,0,1,-1};
+    private int[] y=new int[]{-1,1,0,0};
     private final static App app = new App();
 
     /**
@@ -68,6 +69,64 @@ public class App {
     }
 
     /**
+     * 200. 岛屿数量
+     * 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+     *
+     * 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+     *
+     * 此外，你可以假设该网格的四条边均被水包围。
+     *
+     *
+     *
+     * 示例 1：
+     *
+     * 输入：grid = [
+     *   ["1","1","1","1","0"],
+     *   ["1","1","0","1","0"],
+     *   ["1","1","0","0","0"],
+     *   ["0","0","0","0","0"]
+     * ]
+     * 输出：1
+     * 示例 2：
+     *
+     * 输入：grid = [
+     *   ["1","1","0","0","0"],
+     *   ["1","1","0","0","0"],
+     *   ["0","0","1","0","0"],
+     *   ["0","0","0","1","1"]
+     * ]
+     * 输出：3
+     * @param grid
+     * @return
+     */
+    public int numIslands(char[][] grid) {
+        final int r = grid.length;
+        final int c = grid[0].length;
+        int nums=0;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if(grid[i][j] == '1') {
+                   nums++;
+                   dfs9(grid,i,j,r,c);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private void dfs9(char[][] grid, int i, int j, int r, int c) {
+        if(i<0||j<0||i>=r||j>=c||grid[i][j]=='0') {
+            return;
+        }
+        grid[i][j] = '0';
+        for (int k = 0; k < 4; k++) {
+            int xx=i+x[k];
+            int yy=j+y[k];
+            dfs9(grid,xx,yy,r,c);
+        }
+    }
+
+    /**
      * 733. 图像渲染
      * 有一幅以 m x n 的二维整数数组表示的图画 image ，其中 image[i][j] 表示该图画的像素值大小。
      * <p>
@@ -107,8 +166,7 @@ public class App {
         }
         return image;
     }
-    private int[] x=new int[]{0,0,1,-1};
-    private int[] y=new int[]{-1,1,0,0};
+
     private void dfs8(int[][] image, int sr, int sc, int oldColor, int newColor) {
         if(image[sr][sc]==oldColor){
             image[sr][sc] = newColor;
