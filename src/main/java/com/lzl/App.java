@@ -12,8 +12,8 @@ import java.util.*;
  */
 
 public class App {
-    private int[] x=new int[]{0,0,1,-1};
-    private int[] y=new int[]{-1,1,0,0};
+    private int[] x = new int[]{0, 0, 1, -1};
+    private int[] y = new int[]{-1, 1, 0, 0};
     private final static App app = new App();
 
     /**
@@ -65,49 +65,120 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        System.out.println(app.restoreIpAddresses("101023"));
+        System.out.println();
+        app.solve(new char[][]{{'X', 'O', 'X', 'X'},
+                {'X', 'X', 'O', 'X'}, {
+                'X', 'X', 'O', 'X'},
+                {'X', 'X', 'X', 'X'}});
+    }
+
+    /**
+     * 130. 被围绕的区域
+     * 给你一个 m x n 的矩阵 board ，由若干字符 'X' 和 'O' ，
+     * 找到所有被 'X' 围绕的区域，并将这些区域里所有的 'O' 用 'X' 填充。
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
+     * 输出：[["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
+     * 解释：被围绕的区间不会存在于边界上，换句话说，任何边界上的 'O' 都不会被填充为 'X'。
+     * 任何不在边界上，或不与边界上的 'O' 相连的 'O' 最终都会被填充为 'X'。如果两个元素在水平或垂直方向相邻，
+     * 则称它们是“相连”的。
+     * 示例 2：
+     * <p>
+     * 输入：board = [["X"]]
+     * 输出：[["X"]]
+     *
+     * @param board
+     */
+    public void solve(char[][] board) {
+        int r = board.length;
+        int c = board[0].length;
+        for (int i = 0; i < r; i++) {
+            // 遍历第0列和最后一列的所有行
+            dfs10(board, r,c,i,0);
+            dfs10(board, r,c,i,c-1);
+        }
+        for (int i = 0; i < c; i++) {
+            // 遍历第0行和最后一行的所有列
+            dfs10(board, r,c,0,i);
+            dfs10(board, r,c,r-1,i);
+        }
+        // 上述遍历后所有与边界O相邻的O都会变成S
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                char cc=board[i][j] ;
+                if(cc=='S'){
+                    // 当遇到S说明相邻了，改回O
+                    board[i][j]='O';
+                }else if(cc=='O'){
+                    // 当遇到O说明没有与之相邻的边界O，则其被改变为X
+                    board[i][j]='X';
+                }
+            }
+        }
+//        for (int i = 0; i < r; i++) {
+//            System.out.println(Arrays.toString(board[i]));
+//        }
+    }
+
+    private void dfs10(char[][] board, int r, int c, int i, int j) {
+        print(i + "", j + "");
+        if(i>=0&&i<r&&j>=0&&j<c&&board[i][j]=='O'){
+            // 查找到与边界O相邻的所有O，把他们标记为S
+            board[i][j] = 'S';
+            // 泛洪
+            dfs10(board, r,c,i+1,j);
+            dfs10(board, r,c,i-1,j);
+            dfs10(board, r,c,i,j+1);
+            dfs10(board, r,c,i,j-1);
+        }
+        // 未找到的相邻的X或者O不改变他的值
     }
 
     /**
      * 200. 岛屿数量
      * 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
-     *
+     * <p>
      * 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
-     *
+     * <p>
      * 此外，你可以假设该网格的四条边均被水包围。
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * 示例 1：
-     *
+     * <p>
      * 输入：grid = [
-     *   ["1","1","1","1","0"],
-     *   ["1","1","0","1","0"],
-     *   ["1","1","0","0","0"],
-     *   ["0","0","0","0","0"]
+     * ["1","1","1","1","0"],
+     * ["1","1","0","1","0"],
+     * ["1","1","0","0","0"],
+     * ["0","0","0","0","0"]
      * ]
      * 输出：1
      * 示例 2：
-     *
+     * <p>
      * 输入：grid = [
-     *   ["1","1","0","0","0"],
-     *   ["1","1","0","0","0"],
-     *   ["0","0","1","0","0"],
-     *   ["0","0","0","1","1"]
+     * ["1","1","0","0","0"],
+     * ["1","1","0","0","0"],
+     * ["0","0","1","0","0"],
+     * ["0","0","0","1","1"]
      * ]
      * 输出：3
+     *
      * @param grid
      * @return
      */
     public int numIslands(char[][] grid) {
         final int r = grid.length;
         final int c = grid[0].length;
-        int nums=0;
+        int nums = 0;
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                if(grid[i][j] == '1') {
-                   nums++;
-                   dfs9(grid,i,j,r,c);
+                if (grid[i][j] == '1') {
+                    nums++;
+                    dfs9(grid, i, j, r, c);
                 }
             }
         }
@@ -115,14 +186,14 @@ public class App {
     }
 
     private void dfs9(char[][] grid, int i, int j, int r, int c) {
-        if(i<0||j<0||i>=r||j>=c||grid[i][j]=='0') {
+        if (i < 0 || j < 0 || i >= r || j >= c || grid[i][j] == '0') {
             return;
         }
         grid[i][j] = '0';
         for (int k = 0; k < 4; k++) {
-            int xx=i+x[k];
-            int yy=j+y[k];
-            dfs9(grid,xx,yy,r,c);
+            int xx = i + x[k];
+            int yy = j + y[k];
+            dfs9(grid, xx, yy, r, c);
         }
     }
 
@@ -160,21 +231,22 @@ public class App {
      * @return
      */
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int col=image[sr][sc];
-        if(col!=color){
-            dfs8(image,sr,sc,col,color);
+        int col = image[sr][sc];
+        if (col != color) {
+            dfs8(image, sr, sc, col, color);
         }
         return image;
     }
 
     private void dfs8(int[][] image, int sr, int sc, int oldColor, int newColor) {
-        if(image[sr][sc]==oldColor){
+        if (image[sr][sc] == oldColor) {
             image[sr][sc] = newColor;
             for (int i = 0; i < 4; i++) {
-                int xx=sr+x[i];
-                int yy=sc+y[i];
-                if(xx>=0&&xx<image.length&&yy>=0&&yy<image[0].length)
-                dfs8(image,xx,yy,oldColor,newColor);
+                int xx = sr + x[i];
+                int yy = sc + y[i];
+                if (xx >= 0 && xx < image.length && yy >= 0 && yy < image[0].length) {
+                    dfs8(image, xx, yy, oldColor, newColor);
+                }
             }
         }
     }
