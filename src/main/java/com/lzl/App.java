@@ -69,10 +69,67 @@ public class App {
 //        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
 //                {'S', 'F', 'C', 'S'}, {
 //                'A', 'D', 'E', 'E'}}, "ABCCED"));
-        System.out.println(app.letterCombinations(""));
+//        System.out.println(app.letterCombinations(""));
+        app.letterCasePermutation("abc");
     }
 
+    /**
+     * 784. 字母大小写全排列
+     * 给定一个字符串 s ，通过将字符串 s 中的每个字母转变大小写，我们可以获得一个新的字符串。
+     * <p>
+     * 返回 所有可能得到的字符串集合 。以 任意顺序 返回输出。
+     * <p>
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：s = "a1b2"
+     * 输出：["a1b2", "a1B2", "A1b2", "A1B2"]
+     * 示例 2:
+     * <p>
+     * 输入: s = "3z4"
+     * 输出: ["3z4","3Z4"]
+     *
+     * @param s
+     * @return
+     */
+    public List<String> letterCasePermutation(String s) {
+        List<String> res = new ArrayList<>();
+        StringBuilder path = new StringBuilder();
+        final int l = s.length();
+        dfs13(res, path, l, 0, s);
+        System.out.println(Arrays.toString(res.toArray()));
+        return res;
+    }
 
+    private void dfs13(List<String> res, StringBuilder path, int l, int begin, String s) {
+        if (begin == l) {
+            res.add(path.toString());
+            return;
+        }
+        final char c = s.charAt(begin);
+        path.append(c);
+        dfs13(res, path, l, begin + 1, s);
+        path.deleteCharAt(path.length() - 1);
+        char cc = '0';
+        if (isBigAlpha(c)) {
+            cc = (char) ((int) c + 32);
+        } else {
+            cc = (char) ((int) c - 32);
+        }
+        path.append(cc);
+        dfs13(res, path, l, begin + 1, s);
+        path.deleteCharAt(path.length() - 1);
+
+    }
+
+    private boolean isBigAlpha(char c) {
+        return c >= 'A' && c <= 'Z';
+    }
+
+    private boolean isSmallAlpha(char c) {
+        return c >= 'a' && c <= 'z';
+    }
 
     /**
      * 79. 单词搜索
@@ -1391,30 +1448,30 @@ public class App {
      * @return
      */
     public List<String> letterCombinations(String digits) {
-        if(digits.length()==0)return new ArrayList<>();
-        int l=digits.length();
+        if (digits.length() == 0) return new ArrayList<>();
+        int l = digits.length();
         StringBuilder path = new StringBuilder();
-        List<String> res= new ArrayList<>();
-        dfs12(digits,l,path,res,0);
+        List<String> res = new ArrayList<>();
+        dfs12(digits, l, path, res, 0);
 //        System.out.println(Arrays.toString(res.toArray()));
         return res;
         /**if (digits == null | digits.equals("")) return new ArrayList<>();
-        List<List<String>> list = new ArrayList<>(16);
-        for (int i = 0; i < digits.length(); i++) {
-            int n = Integer.parseInt(String.valueOf(digits.charAt(i)));
-            final List<String> strByNum = getStrByNum(n);
-            list.add(strByNum);
-        }
-        List<String> cur = list.get(0);
-        for (int i = 1; i < list.size(); i++) {
-            final List<String> chars = list.get(i);
-            cur = getDika(cur, chars);
-        }
-        return cur;*/
+         List<List<String>> list = new ArrayList<>(16);
+         for (int i = 0; i < digits.length(); i++) {
+         int n = Integer.parseInt(String.valueOf(digits.charAt(i)));
+         final List<String> strByNum = getStrByNum(n);
+         list.add(strByNum);
+         }
+         List<String> cur = list.get(0);
+         for (int i = 1; i < list.size(); i++) {
+         final List<String> chars = list.get(i);
+         cur = getDika(cur, chars);
+         }
+         return cur;*/
     }
 
     private void dfs12(String digits, int l, StringBuilder path, List<String> res, int begin) {
-        if(begin==l){
+        if (begin == l) {
             // 遍历完了
             res.add(path.toString());
             return;
@@ -1423,8 +1480,8 @@ public class App {
         final List<String> strByNum = getStrByNum(c - '0');
         for (int i = 0; i < strByNum.size(); i++) {
             path.append(strByNum.get(i));
-            dfs12(digits, l, path, res, begin+1);
-            path.deleteCharAt(path.length()-1);
+            dfs12(digits, l, path, res, begin + 1);
+            path.deleteCharAt(path.length() - 1);
         }
     }
 
