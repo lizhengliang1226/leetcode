@@ -66,10 +66,13 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         System.out.println();
-        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
-                {'S', 'F', 'C', 'S'}, {
-                'A', 'D', 'E', 'E'}}, "ABCCED"));
+//        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
+//                {'S', 'F', 'C', 'S'}, {
+//                'A', 'D', 'E', 'E'}}, "ABCCED"));
+        System.out.println(app.letterCombinations(""));
     }
+
+
 
     /**
      * 79. 单词搜索
@@ -114,9 +117,9 @@ public class App {
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 // 每一次的字符都去找
-                print("开始从i="+i+",j="+j+"处查找","此时单词字符位置：k=0");
+                print("开始从i=" + i + ",j=" + j + "处查找", "此时单词字符位置：k=0");
                 res = dfs11(board, word, r, c, wl, 0, i, j, used);
-                print("查找结束从i="+i+",j="+j+"处查找","结果是："+res);
+                print("查找结束从i=" + i + ",j=" + j + "处查找", "结果是：" + res);
                 if (res) {
                     print("已找到返回！");
                     return true;
@@ -131,14 +134,15 @@ public class App {
     private boolean dfs11(char[][] board, String word, int r, int c, int wl, int wpos, int i, int j, boolean[][] used) {
         if (board[i][j] != word.charAt(wpos)) {
             // 找的过程中有不匹配的
-            print("在i="+i+"j="+j+"存在不匹配,字符位置k="+wpos+",字符是：c="+word.charAt(wpos)+",该位置是：board["+i+"]["+j+"]="+board[i][j]+"，结束查找返回");
+            print("在i=" + i + "j=" + j + "存在不匹配,字符位置k=" + wpos + ",字符是：c=" + word.charAt(
+                    wpos) + ",该位置是：board[" + i + "][" + j + "]=" + board[i][j] + "，结束查找返回");
             return false;
         } else if (wpos == wl - 1) {
             // 当前字符是相等的且位置已经到了最后
             return true;
         }
         // 将扫描到的字符设置为已使用
-        used[i][j]=true;
+        used[i][j] = true;
         boolean ress = false;
         for (int k = 0; k < 4; k++) {
             int xx = i + x[k];
@@ -146,14 +150,14 @@ public class App {
             // 泛洪
             if (xx >= 0 && xx < r && yy >= 0 && yy < c && !used[xx][yy]) {
                 ress = dfs11(board, word, r, c, wl, wpos + 1, xx, yy, used);
-                if(ress){
+                if (ress) {
                     // 一旦某次找到了结果，直接返回
                     break;
                 }
             }
         }
         // 将之前使用过的归还
-        used[i][j]=false;
+        used[i][j] = false;
         return ress;
     }
 
@@ -1387,7 +1391,14 @@ public class App {
      * @return
      */
     public List<String> letterCombinations(String digits) {
-        if (digits == null | digits.equals("")) return new ArrayList<>();
+        if(digits.length()==0)return new ArrayList<>();
+        int l=digits.length();
+        StringBuilder path = new StringBuilder();
+        List<String> res= new ArrayList<>();
+        dfs12(digits,l,path,res,0);
+//        System.out.println(Arrays.toString(res.toArray()));
+        return res;
+        /**if (digits == null | digits.equals("")) return new ArrayList<>();
         List<List<String>> list = new ArrayList<>(16);
         for (int i = 0; i < digits.length(); i++) {
             int n = Integer.parseInt(String.valueOf(digits.charAt(i)));
@@ -1399,7 +1410,22 @@ public class App {
             final List<String> chars = list.get(i);
             cur = getDika(cur, chars);
         }
-        return cur;
+        return cur;*/
+    }
+
+    private void dfs12(String digits, int l, StringBuilder path, List<String> res, int begin) {
+        if(begin==l){
+            // 遍历完了
+            res.add(path.toString());
+            return;
+        }
+        final char c = digits.charAt(begin);
+        final List<String> strByNum = getStrByNum(c - '0');
+        for (int i = 0; i < strByNum.size(); i++) {
+            path.append(strByNum.get(i));
+            dfs12(digits, l, path, res, begin+1);
+            path.deleteCharAt(path.length()-1);
+        }
     }
 
     private List<String> getDika(List<String> chars, List<String> chars1) {
