@@ -66,10 +66,95 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         System.out.println();
-        app.solve(new char[][]{{'X', 'O', 'X', 'X'},
-                {'X', 'X', 'O', 'X'}, {
-                'X', 'X', 'O', 'X'},
-                {'X', 'X', 'X', 'X'}});
+        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'}, {
+                'A', 'D', 'E', 'E'}}, "ABCCED"));
+    }
+
+    /**
+     * 79. 单词搜索
+     * 给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，
+     * 返回 true ；否则，返回 false 。
+     * <p>
+     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
+     * 同一个单元格内的字母不允许被重复使用。
+     * <p>
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+     * 输出：true
+     * 示例 2：
+     * <p>
+     * <p>
+     * 输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
+     * 输出：true
+     * 示例 3：
+     * <p>
+     * <p>
+     * 输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
+     * 输出：false
+     *
+     * @param board
+     * @param word
+     * @return
+     */
+    public boolean exist(char[][] board, String word) {
+        // 遍历单词，拿到每一个字母，然后遍历
+        for (int i = 0; i < board.length; i++) {
+            System.out.println(Arrays.toString(board[i]));
+        }
+        int r = board.length;
+        int c = board[0].length;
+        int wl = word.length();
+        boolean[][] used = new boolean[r][c];
+        boolean res = false;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                // 每一次的字符都去找
+                print("开始从i="+i+",j="+j+"处查找","此时单词字符位置：k=0");
+                res = dfs11(board, word, r, c, wl, 0, i, j, used);
+                print("查找结束从i="+i+",j="+j+"处查找","结果是："+res);
+                if (res) {
+                    print("已找到返回！");
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+
+    private boolean dfs11(char[][] board, String word, int r, int c, int wl, int wpos, int i, int j, boolean[][] used) {
+        if (board[i][j] != word.charAt(wpos)) {
+            // 找的过程中有不匹配的
+            print("在i="+i+"j="+j+"存在不匹配,字符位置k="+wpos+",字符是：c="+word.charAt(wpos)+",该位置是：board["+i+"]["+j+"]="+board[i][j]+"，结束查找返回");
+            return false;
+        } else if (wpos == wl - 1) {
+            // 当前字符是相等的且位置已经到了最后
+            return true;
+        }
+        // 将扫描到的字符设置为已使用
+        used[i][j]=true;
+        boolean ress = false;
+        for (int k = 0; k < 4; k++) {
+            int xx = i + x[k];
+            int yy = j + y[k];
+            // 泛洪
+            if (xx >= 0 && xx < r && yy >= 0 && yy < c && !used[xx][yy]) {
+                ress = dfs11(board, word, r, c, wl, wpos + 1, xx, yy, used);
+                if(ress){
+                    // 一旦某次找到了结果，直接返回
+                    break;
+                }
+            }
+        }
+        // 将之前使用过的归还
+        used[i][j]=false;
+        return ress;
     }
 
     /**
@@ -98,24 +183,24 @@ public class App {
         int c = board[0].length;
         for (int i = 0; i < r; i++) {
             // 遍历第0列和最后一列的所有行
-            dfs10(board, r,c,i,0);
-            dfs10(board, r,c,i,c-1);
+            dfs10(board, r, c, i, 0);
+            dfs10(board, r, c, i, c - 1);
         }
         for (int i = 0; i < c; i++) {
             // 遍历第0行和最后一行的所有列
-            dfs10(board, r,c,0,i);
-            dfs10(board, r,c,r-1,i);
+            dfs10(board, r, c, 0, i);
+            dfs10(board, r, c, r - 1, i);
         }
         // 上述遍历后所有与边界O相邻的O都会变成S
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                char cc=board[i][j] ;
-                if(cc=='S'){
+                char cc = board[i][j];
+                if (cc == 'S') {
                     // 当遇到S说明相邻了，改回O
-                    board[i][j]='O';
-                }else if(cc=='O'){
+                    board[i][j] = 'O';
+                } else if (cc == 'O') {
                     // 当遇到O说明没有与之相邻的边界O，则其被改变为X
-                    board[i][j]='X';
+                    board[i][j] = 'X';
                 }
             }
         }
@@ -126,14 +211,14 @@ public class App {
 
     private void dfs10(char[][] board, int r, int c, int i, int j) {
         print(i + "", j + "");
-        if(i>=0&&i<r&&j>=0&&j<c&&board[i][j]=='O'){
+        if (i >= 0 && i < r && j >= 0 && j < c && board[i][j] == 'O') {
             // 查找到与边界O相邻的所有O，把他们标记为S
             board[i][j] = 'S';
             // 泛洪
-            dfs10(board, r,c,i+1,j);
-            dfs10(board, r,c,i-1,j);
-            dfs10(board, r,c,i,j+1);
-            dfs10(board, r,c,i,j-1);
+            dfs10(board, r, c, i + 1, j);
+            dfs10(board, r, c, i - 1, j);
+            dfs10(board, r, c, i, j + 1);
+            dfs10(board, r, c, i, j - 1);
         }
         // 未找到的相邻的X或者O不改变他的值
     }
