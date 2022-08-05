@@ -1,5 +1,6 @@
 package com.lzl;
 
+import cn.hutool.core.text.StrBuilder;
 import com.lzl.util.LeetCodeUtil;
 import com.lzl.util.ListNode;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +21,134 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-//        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
-//                {'S', 'F', 'C', 'S'}, {
-//                'A', 'D', 'E', 'E'}}, "ABCCED"));
-//        System.out.println(app.letterCombinations(""));
+        app.solveNQueens(4);
+    }
+
+    /**
+     * 51. N 皇后
+     * 按照国际象棋的规则，皇后可以攻击与之处在同一行或同一列或同一斜线上的棋子。
+     * <p>
+     * n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+     * <p>
+     * 给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
+     * <p>
+     * 每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+     * <p>
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：n = 4
+     * 输出：[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+     * 解释：如上图所示，4 皇后问题存在两个不同的解法。
+     * 示例 2：
+     * <p>
+     * 输入：n = 1
+     * 输出：[["Q"]]
+     *
+     * @param n
+     * @return
+     */
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<List<String>>();
+        List<String> path = new ArrayList<>();
+        boolean[][] used = new boolean[n][n];
+        int[][] board = new int[n][n];
+        dfs15(res, used, path, board, n, 0, 0, 0);
+        return res;
+    }
+
+
+    private void dfs15(List<List<String>> res, boolean[][] used, List<String> path,
+                       int[][] board, int n, int qn, int rstart, int cstart) {
+        if (qn == n) {
+            List<String> p = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < n; j++) {
+                    int a = board[i][j];
+                    if (a == 1) {
+                        sb.append("Q");
+                    } else {
+                        sb.append(".");
+                    }
+                }
+                p.add(sb.toString());
+//                log.info("第{}次{}", ff, Arrays.toString(board[i]));
+            }
+            res.add(p);
+            return;
+        }
+        for (int x = rstart; x < n; x++) {
+            for (int y = cstart; y < n; y++) {
+                int a = board[x][y];
+                boolean use = used[x][y];
+                if (!use) {
+                    boolean can = searchQueen(board, x, y, n);
+                    if (can) {
+                        board[x][y] = 1;
+                        used[x][y] = true;
+                        dfs15(res, used, path, board, n, qn + 1, x + 1, 0);
+                        board[x][y] = 0;
+                        used[x][y] = false;
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean searchQueen(int[][] board, int x, int y, int n) {
+        for (int m = 0; m < n; m++) {
+            if (board[x][m] == 1) {
+                return false;
+            }
+            if (board[m][y] == 1) {
+                return false;
+            }
+        }
+        int xx = x;
+        int yy = y;
+        while (xx < n && yy < n) {
+            if (board[xx++][yy++] == 1) {
+                return false;
+            }
+        }
+        xx = x;
+        yy = y;
+        while (xx >= 0 && yy >= 0) {
+            if (board[xx--][yy--] == 1) {
+                return false;
+            }
+        }
+        xx = x;
+        yy = y;
+        while (xx < n && yy >= 0) {
+            if (board[xx++][yy--] == 1) {
+                return false;
+            }
+        }
+        xx = x;
+        yy = y;
+        while (xx >= 0 && yy < n) {
+            if (board[xx--][yy++] == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void letterCombinations() {
+        System.out.println(app.letterCombinations("5674"));
+    }
+
+    private static void exist() {
+        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'}, {
+                'A', 'D', 'E', 'E'}}, "ABCCED"));
+    }
+
+    private static void generateParenthesis() {
         final List<String> abc = app.generateParenthesis(3);
     }
 
