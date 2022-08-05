@@ -2,6 +2,7 @@ package com.lzl;
 
 import com.lzl.util.LeetCodeUtil;
 import com.lzl.util.ListNode;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -10,11 +11,21 @@ import java.util.*;
  *
  * @author 17314
  */
-
+@Slf4j
 public class App {
     private int[] x = new int[]{0, 0, 1, -1};
     private int[] y = new int[]{-1, 1, 0, 0};
     private final static App app = new App();
+
+
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+//        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
+//                {'S', 'F', 'C', 'S'}, {
+//                'A', 'D', 'E', 'E'}}, "ABCCED"));
+//        System.out.println(app.letterCombinations(""));
+        final List<String> abc = app.generateParenthesis(3);
+    }
 
     /**
      * 35. 搜索插入位置
@@ -60,17 +71,8 @@ public class App {
     }
 
     private void print(String... strs) {
-        System.out.println(Arrays.toString(strs));
-    }
 
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
-        System.out.println();
-//        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
-//                {'S', 'F', 'C', 'S'}, {
-//                'A', 'D', 'E', 'E'}}, "ABCCED"));
-//        System.out.println(app.letterCombinations(""));
-        app.letterCasePermutation("abc");
+        System.out.println(Arrays.toString(strs));
     }
 
     /**
@@ -98,7 +100,7 @@ public class App {
         StringBuilder path = new StringBuilder();
         final int l = s.length();
         dfs13(res, path, l, 0, s);
-        System.out.println(Arrays.toString(res.toArray()));
+//        System.out.println(Arrays.toString(res.toArray()));
         return res;
     }
 
@@ -1723,12 +1725,47 @@ public class App {
      * @return
      */
     public List<String> generateParenthesis(int n) {
-        List<String> result = new ArrayList<>(16);
-        if (n == 0) {
-            return result;
+        List<String> res = new ArrayList<String>();
+        StringBuilder path = new StringBuilder();
+        dfs14(path, 0, 0, res, n);
+        log.info("{}", Arrays.toString(res.toArray()));
+        return res;
+
+        //  之前写的方法
+        //        List<String> result = new ArrayList<>(16);
+//        if (n == 0) {
+//            return result;
+//        }
+//        backtrack("", n, n, result);
+//        return result;
+    }
+
+    private void dfs14(StringBuilder path, int ln, int rn, List<String> result, int n) {
+        if (ln == n && rn == n) {
+            // 已经使用完全部的括号，得到了结果集
+            result.add(path.toString());
+            return;
         }
-        backtrack("", n, n, result);
-        return result;
+        if (ln < rn) {
+            // 如果右括号数量大于左括号，则结束，不可能得到结果集
+            return;
+        }
+        if (ln < n) {
+            // 左括号的数量还没到最大数量，继续添加
+            path.append("(");
+            // 将左括号数量加一，继续
+            dfs14(path, ln + 1, rn, result, n);
+            // 回溯
+            path.deleteCharAt(path.length() - 1);
+        }
+        if (rn < n) {
+            // 左括号的数量还没到最大数量，继续添加
+            path.append(")");
+            // 将左括号数量加一，继续
+            dfs14(path, ln, rn + 1, result, n);
+            // 回溯
+            path.deleteCharAt(path.length() - 1);
+        }
     }
 
     private void backtrack(String curStr, int ln, int rn, List<String> result) {
@@ -1740,6 +1777,7 @@ public class App {
             return;
         }
         if (ln > 0) {
+            // 由于字符串的不变性，导致回溯不明显，这里虽然传过去了一个字符，其实字符本身并未传递，传递的是复制的值
             backtrack(curStr + "(", ln - 1, rn, result);
         }
         if (rn > 0) {
