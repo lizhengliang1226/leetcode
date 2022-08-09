@@ -75,9 +75,11 @@ public class SolveSudoku {
     int[] lines = new int[9];
     int[] columns = new int[9];
     int[][] blocks = new int[3][3];
+
     boolean[][] rows = new boolean[9][9];
     boolean[][] cols = new boolean[9][9];
     boolean[][][] sub = new boolean[3][3][9];
+
     List<int[]> spaces = new ArrayList<int[]>();
     boolean valid = false;
 
