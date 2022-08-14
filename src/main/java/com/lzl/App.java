@@ -1,6 +1,5 @@
 package com.lzl;
 
-import cn.hutool.core.text.StrBuilder;
 import com.lzl.util.LeetCodeUtil;
 import com.lzl.util.ListNode;
 import lombok.extern.slf4j.Slf4j;
@@ -1140,8 +1139,8 @@ public class App {
                     int index = c - '0' - 1;
                     rows[i][index]++;
                     cols[j][index]++;
-                    sub[i][j][index]++;
-                    if (rows[i][index] > 1 || cols[j][index] > 1 || sub[i][j][index] > 1) return false;
+                    sub[i/3][j/3][index]++;
+                    if (rows[i][index] > 1 || cols[j][index] > 1 || sub[i/3][j/3][index] > 1) return false;
                 }
             }
         }
@@ -1725,7 +1724,7 @@ public class App {
 //        return h;
 
         //栈实现遍历一趟
-        Stack<ListNode> storage = new Stack<>();
+        com.lzl.util.Stack<ListNode> storage = new com.lzl.util.Stack<>();
 
         for (ListNode cur = head; cur != null; cur = cur.next) {
             storage.push(cur);
@@ -1768,7 +1767,7 @@ public class App {
     public boolean isValid(String s) {
         if (s == null || s.equals("")) return true;
         if (s.length() % 2 != 0) return false;
-        Stack<Character> stack = new Stack();
+        com.lzl.util.Stack<Character> stack = new com.lzl.util.Stack();
         for (int i = 0; i < s.length(); i++) {
             final char c = s.charAt(i);
             if (c == '(' || c == '[' || c == '{') {
@@ -2417,30 +2416,5 @@ public class App {
             }
         }
         return ans;
-    }
-}
-
-
-class Stack<T> {
-    private final LinkedList<T> storage = new LinkedList<T>();
-
-    public void push(T v) {
-        storage.addFirst(v);
-    }
-
-    public T peek() {
-        return storage.getFirst();
-    }
-
-    public T pop() {
-        return storage.removeFirst();
-    }
-
-    public boolean empty() {
-        return storage.isEmpty();
-    }
-
-    public String toString() {
-        return storage.toString();
     }
 }
