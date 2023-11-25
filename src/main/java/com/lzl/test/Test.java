@@ -2,6 +2,7 @@ package com.lzl.test;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.UUID;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -29,37 +30,7 @@ public class Test {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        ZipOutputStream zip = new ZipOutputStream(new FileOutputStream("D:\\"));
-//        Test t=new Test();
-//        T tw=new T();
-        String s = new String("2222");
-        String str1 = "a";
-        String str2 = "b";
-        String str3 = "ab";
-        String str4 = str1 + str2;
-        String str5 = new String("ab");
-
-        System.out.println(str5.equals(str3));
-        System.out.println(str5 == str3);
-        System.out.println(str5.intern() == str3);
-        System.out.println(str5.intern() == str4);
-        System.out.println();
-        System.out.println();
-        System.out.println();
-
-
-        String a = "abc";
-        String b = "abc";
-        String c = "a" + "b" + "c";
-        String d = "a" + "bc";
-        String e = "ab" + "c";
-
-        System.out.println(a == b);
-        System.out.println(a == c);
-        System.out.println(a == d);
-        System.out.println(a == e);
-        System.out.println(c == d);
-        System.out.println(c == e);
+        System.out.println(UUID.randomUUID());
     }
 }
 
