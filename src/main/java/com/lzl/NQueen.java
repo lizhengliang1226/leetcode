@@ -23,6 +23,7 @@ public class NQueen {
             res.add(new ArrayList<>(path));
         }
         backtrack(res, path, 0);
+        return res;
     }
 
     private void backtrack(List<List<String>> res, List<String> path, int row) {

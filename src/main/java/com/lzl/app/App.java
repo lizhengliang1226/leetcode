@@ -1,7 +1,5 @@
 package com.lzl.app;
 
-import com.lzl.ModuleClass;
-
 /**
  * 测试类
  *

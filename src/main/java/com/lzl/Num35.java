@@ -7,7 +7,7 @@ package com.lzl;
  * @version v1.0
  * @date 2022/7/18-17:50
  */
-public class Num35 extends ModuleClass {
+public class Num35  {
 
     /**
      * 35. 搜索插入位置

@@ -1,8 +1,6 @@
 package com.lzl;
 
-import com.lzl.util.LeetCodeUtil;
 import com.lzl.util.ListNode;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -11,7 +9,6 @@ import java.util.*;
  *
  * @author 17314
  */
-@Slf4j
 public class App {
     private int[] x = new int[]{0, 0, 1, -1};
     private int[] y = new int[]{-1, 1, 0, 0};
@@ -1148,8 +1145,6 @@ public class App {
     }
 
     private static void test4(App app) {
-        final double medianSortedArrays = app.findMedianSortedArrays(LeetCodeUtil.getIntAry(0, 1), LeetCodeUtil.getIntAry(5, 1));
-        System.out.println(medianSortedArrays);
     }
 
     /**
@@ -1161,8 +1156,6 @@ public class App {
      * @return
      */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        LeetCodeUtil.traverse(nums1);
-        LeetCodeUtil.traverse(nums2);
         if (nums1 == null && nums2 == null) {
             return 0;
         }
@@ -1187,7 +1180,6 @@ public class App {
         while (j <= nums2.length - 1) {
             temp[t++] = nums2[j++];
         }
-        LeetCodeUtil.traverse(temp);
         int mid = (nums1.length + nums2.length) / 2;
         if ((nums1.length + nums2.length) % 2 == 0) {
             double a = temp[mid] + temp[mid - 1];
@@ -1852,7 +1844,6 @@ public class App {
         List<String> res = new ArrayList<String>();
         StringBuilder path = new StringBuilder();
         dfs14(path, 0, 0, res, n);
-        log.info("{}", Arrays.toString(res.toArray()));
         return res;
 
         //  之前写的方法

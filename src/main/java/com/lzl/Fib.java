@@ -14,7 +14,7 @@ public class Fib {
         Fib fib = new Fib();
         int fib1 = fib.fib(10);
         System.out.println(fib1);
-        Arrays.fill();
+//        Arrays.fill();
     }
 
     public int fib(int n) {
