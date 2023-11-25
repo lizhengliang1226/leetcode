@@ -26,8 +26,19 @@ package com.lzl.greed;
  * @date 2022/8/10-9:58
  */
 public class CanJump {
+    int aa;
+    int bb;
+    public CanJump(int a,int b) {
+        aa=a++;
+        bb=aa*++b;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(new CanJump().canJump(new int[]{5, 9, 3, 2, 1, 0, 2, 3, 3, 1, 0, 0}));
+//        System.out.println(new CanJump().canJump(new int[]{5, 9, 3, 2, 1, 0, 2, 3, 3, 1, 0, 0}));
+        final CanJump canJump = new CanJump(4, 5);
+        System.out.println(canJump.aa);
+        System.out.println(canJump.bb);
     }
 
     public boolean canJump(int[] nums) {
