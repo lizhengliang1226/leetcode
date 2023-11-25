@@ -26,7 +26,7 @@ public class DFS {
         Deque<Integer> path = new ArrayDeque<>();
         // 要遍历的数组，最大深度，起始深度一开始为0，结果集暂存数组，状态数组，结果集
         ddfs(nums, l, 0, path, used, res);
-return res;
+        return res;
     }
 
     private void ddfs(int[] nums, int l, int depth, Deque<Integer> path,
