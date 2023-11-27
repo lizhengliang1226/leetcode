@@ -21,8 +21,11 @@ class Stack<T> {
     public T pop() {
         return storage.removeFirst();
     }
+    public void clear() {
+        storage.clear();
+    }
 
-    public boolean empty() {
+    public boolean isEmpty() {
         return storage.isEmpty();
     }
 
