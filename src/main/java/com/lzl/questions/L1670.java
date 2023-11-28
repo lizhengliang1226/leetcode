@@ -29,20 +29,20 @@ package com.lzl.questions;
 public class L1670 {
     public static void main(String[] args) {
         FrontMiddleBackQueue q = new FrontMiddleBackQueue();
-       q.pushMiddle(874835);
-       q.popBack();
-       q.popMiddle();
-       q.popMiddle();
-       q.pushBack(319750);
-       q.pushFront(782168);
-       q.popFront();
-       q.pushMiddle(16473);
-       q.pushMiddle(495349);
-       q.popMiddle();
-       q.popMiddle();
-       q.pushMiddle(596131);
-       q.popMiddle();
-       q.pushMiddle(583563);
+        q.pushMiddle(874835);
+        q.popBack();
+        q.popMiddle();
+        q.popMiddle();
+        q.pushBack(319750);
+        q.pushFront(782168);
+        q.popFront();
+        q.pushMiddle(16473);
+        q.pushMiddle(495349);
+        q.popMiddle();
+        q.popMiddle();
+        q.pushMiddle(596131);
+        q.popMiddle();
+        q.pushMiddle(583563);
     }
 }
 
@@ -70,20 +70,20 @@ class FrontMiddleBackQueue {
         head.next = cur;
         cur.next = h;
         h.prev = cur;
-        cur.prev=head;
+        cur.prev = head;
         // 单，左移一个 双，不动
-        if(size%2!=0){
-            mid.next= mid.next.prev;
+        if (size % 2 != 0) {
+            mid.next = mid.next.prev;
         }
         size++;
     }
 
     private void init(Node cur) {
         head.next = cur;
-        cur.prev=head;
+        cur.prev = head;
         mid.next = cur;
         tail.next = cur;
-        cur.next=tail;
+        cur.next = tail;
     }
 
     public void pushMiddle(int val) {
@@ -123,57 +123,57 @@ class FrontMiddleBackQueue {
             size++;
             return;
         }
-       Node t= tail.next;
-        t.next=cur;
-        cur.prev=t;
-        tail.next=cur;
-        cur.next=tail;
-        if(size%2==0){
-            mid.next= mid.next.next;
+        Node t = tail.next;
+        t.next = cur;
+        cur.prev = t;
+        tail.next = cur;
+        cur.next = tail;
+        if (size % 2 == 0) {
+            mid.next = mid.next.next;
         }
         size++;
     }
 
     public int popFront() {
-        if(size==0){
+        if (size == 0) {
             return -1;
         }
         Node h = head.next;
-        head.next=h.next;
-        h.next.prev=head;
-        mid.next=size%2==0?mid.next.next:mid.next;
-        h.next=null;
+        head.next = h.next;
+        h.next.prev = head;
+        mid.next = size % 2 == 0 ? mid.next.next : mid.next;
+        h.next = null;
         size--;
         return h.val;
     }
 
     public int popMiddle() {
-        if(size==0){
+        if (size == 0) {
             return -1;
         }
         Node m = mid.next;
         Node prev = m.prev;
         Node next = m.next;
-        mid.next=size%2==0?next:prev;
-        prev.next=next;
-        next.prev=prev;
-        m.next=null;
-        m.prev=null;
+        mid.next = size % 2 == 0 ? next : prev;
+        prev.next = next;
+        next.prev = prev;
+        m.next = null;
+        m.prev = null;
         size--;
         return m.val;
     }
 
     public int popBack() {
-        if(size==0){
+        if (size == 0) {
             return -1;
         }
         Node t = tail.next;
         Node prev = t.prev;
-        prev.next=tail;
-        tail.next=prev;
-        mid.next=size%2==0?mid.next:mid.next.prev;
-        t.prev=null;
-        t.next=null;
+        prev.next = tail;
+        tail.next = prev;
+        mid.next = size % 2 == 0 ? mid.next : mid.next.prev;
+        t.prev = null;
+        t.next = null;
         size--;
         return t.val;
     }
