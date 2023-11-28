@@ -1,8 +1,6 @@
 package com.lzl;
 
 
-import java.util.*;
-
 /**
  * 1457. 二叉树中的伪回文路径
  * 中等
