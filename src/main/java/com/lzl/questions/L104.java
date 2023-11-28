@@ -1,4 +1,6 @@
-package com.lzl;
+package com.lzl.questions;
+
+import com.lzl.util.TreeNode;
 
 /**
  * 104. 二叉树的最大深度

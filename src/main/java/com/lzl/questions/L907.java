@@ -1,4 +1,6 @@
-package com.lzl;
+package com.lzl.questions;
+
+import com.lzl.util.Stack;
 
 /**
  * 907. 子数组的最小值之和

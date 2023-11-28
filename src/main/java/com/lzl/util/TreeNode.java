@@ -1,4 +1,4 @@
-package com.lzl;
+package com.lzl.util;
 
 /**
  * @author LZL

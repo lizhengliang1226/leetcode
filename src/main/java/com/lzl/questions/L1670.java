@@ -1,4 +1,4 @@
-package com.lzl;
+package com.lzl.questions;
 
 /**
  * 1670. 设计前中后队列

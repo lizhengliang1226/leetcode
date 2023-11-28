@@ -1,4 +1,6 @@
-package com.lzl;
+package com.lzl.questions;
+
+import com.lzl.util.TreeNode;
 
 import java.util.LinkedList;
 import java.util.Queue;

@@ -1,4 +1,4 @@
-package com.lzl;
+package com.lzl.questions;
 
 import java.util.HashMap;
 import java.util.Map;

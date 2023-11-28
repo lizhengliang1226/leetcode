@@ -1,4 +1,6 @@
-package com.lzl;
+package com.lzl.datastruct;
+
+import com.lzl.util.Stack;
 
 /**
  * 左左小大：从左往右遍历，找到左边第一个比自己小的元素，符号 栈元素>当前元素 递减

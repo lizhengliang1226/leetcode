@@ -1,4 +1,4 @@
-package com.lzl;
+package com.lzl.questions;
 
 /**
  * 1492. n 的第 k 个因子

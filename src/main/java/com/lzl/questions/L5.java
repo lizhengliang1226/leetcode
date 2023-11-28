@@ -1,4 +1,4 @@
-package com.lzl;
+package com.lzl.questions;
 
 /**
  * 5. 最长回文子串

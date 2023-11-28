@@ -1,6 +1,5 @@
-package com.lzl;
+package com.lzl.questions;
 
-import java.rmi.Remote;
 import java.util.*;
 
 /**

@@ -1,4 +1,4 @@
-package com.lzl.backtrack;
+package com.lzl.questions;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
 package com.lzl;
 
 import com.lzl.util.ListNode;
+import com.lzl.util.Stack;
 
 import java.util.*;
 
@@ -9,15 +10,15 @@ import java.util.*;
  *
  * @author 17314
  */
-public class App {
+public class DfsQuestionList {
     private int[] x = new int[]{0, 0, 1, -1};
     private int[] y = new int[]{-1, 1, 0, 0};
-    private final static App app = new App();
+    private final static DfsQuestionList DFS_QUESTION_LIST = new DfsQuestionList();
 
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        app.solveNQueens(4);
+        DFS_QUESTION_LIST.solveNQueens(4);
     }
 
     /**
@@ -135,17 +136,17 @@ public class App {
     }
 
     private static void letterCombinations() {
-        System.out.println(app.letterCombinations("5674"));
+        System.out.println(DFS_QUESTION_LIST.letterCombinations("5674"));
     }
 
     private static void exist() {
-        System.out.println(app.exist(new char[][]{{'A', 'B', 'C', 'E'},
+        System.out.println(DFS_QUESTION_LIST.exist(new char[][]{{'A', 'B', 'C', 'E'},
                 {'S', 'F', 'C', 'S'}, {
                 'A', 'D', 'E', 'E'}}, "ABCCED"));
     }
 
     private static void generateParenthesis() {
-        final List<String> abc = app.generateParenthesis(3);
+        final List<String> abc = DFS_QUESTION_LIST.generateParenthesis(3);
     }
 
     /**
@@ -1144,7 +1145,7 @@ public class App {
         return true;
     }
 
-    private static void test4(App app) {
+    private static void test4(DfsQuestionList dfsQuestionList) {
     }
 
     /**
@@ -1726,10 +1727,10 @@ public class App {
             count++;
             storage.pop();
         }
-        if (storage.empty() && head.next == null) {
+        if (storage.isEmpty() && head.next == null) {
             return null;
         }
-        if (storage.empty()) {
+        if (storage.isEmpty()) {
             return head.next;
         }
         ListNode top = storage.peek();
@@ -1759,17 +1760,17 @@ public class App {
     public boolean isValid(String s) {
         if (s == null || s.equals("")) return true;
         if (s.length() % 2 != 0) return false;
-        com.lzl.util.Stack<Character> stack = new com.lzl.util.Stack();
+        com.lzl.util.Stack<Character> stack = new Stack();
         for (int i = 0; i < s.length(); i++) {
             final char c = s.charAt(i);
             if (c == '(' || c == '[' || c == '{') {
                 stack.push(c);
             } else {
-                if (stack.empty()) return false;
+                if (stack.isEmpty()) return false;
                 if (!stack.pop().equals(getL(c))) return false;
             }
         }
-        return stack.empty();
+        return stack.isEmpty();
     }
 
 
@@ -2054,9 +2055,9 @@ public class App {
 //                    newH = ele;
 //                }
 //            } while(head != null);
-//            if(!stack.empty()){
+//            if(!stack.isEmpty()){
 //                ListNode last=null;
-//                while(!stack.empty()){
+//                while(!stack.isEmpty()){
 //                    last = stack.pop();
 //                }
 //                newH.next = last;
@@ -2089,7 +2090,7 @@ public class App {
 //        for(ListNode h=head;h!=null;h=h.next){
 //            s.push(h);
 //        }
-//        while(!s.empty()){
+//        while(!s.isEmpty()){
 //            ListNode pop = s.pop();
 //            pop.next=null;
 //            l.next=pop;

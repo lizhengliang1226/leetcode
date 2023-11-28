@@ -1,4 +1,6 @@
-package com.lzl;
+package com.lzl.questions;
+
+import com.lzl.util.TreeNode;
 
 /**
  * 543. 二叉树的直径
