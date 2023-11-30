@@ -1,0 +1,52 @@
+  public List<Integer> slideWindow(String s, String p) {
+        // 定义结果集
+        List<Integer> res=new ArrayList<>(16);
+        // 做基础判断
+        if(s.length()==0)return res;
+        if(s.length()<p.length())return res;
+        // 定义变量
+        int left=0,right=0,valid=0;
+        int[] need=new int[26];
+        int[] window=new int[26];
+        int n=0;
+        // 初始化need
+        for (int i = 0; i < p.length(); i++) {
+            char c = p.charAt(i);
+            if(need[c-'a']==0)n++;
+            need[c-'a']+=1;
+        }
+        // 开始滑动
+        while(right<s.length()){
+            // ---------------扩大窗口固定流程start-----------
+            char c = s.charAt(right);
+            int index=c-'a';
+            if(need[index]!=0){
+                window[index]+=1;
+                if(window[index]==need[index])valid++;
+            }
+            // ---------------扩大窗口固定流程end-----------
+            while(根据需要确认缩小窗口条件，可能要固定窗口，或者窗口大小达到什么程度){
+                // ---------------结束条件start，根据具体要求写结束条件，可能是添加结果集，可能直接就返回了--------------
+                if(valid==n){
+                    res.add(left);
+                }
+                // ---------------结束条件end--------------
+                 // ---------------缩小窗口固定流程start-----------
+                char c1 = s.charAt(left);
+                int i = c1 - 'a';
+                if(need[i]!=0){
+                    if(window[i]==need[i]){
+                        valid--;
+                    }
+                    // 注意，此处一定要先判断再缩小，否则有问题
+                    window[i]-=1;
+                }
+                 // ---------------缩小窗口固定流程start-----------
+                 // 缩小窗口
+                left++;
+            }
+            // 扩大窗口，这个位置不确定，可能在while后，也可能在while之前
+            right++;
+        }
+        return res;
+    }
