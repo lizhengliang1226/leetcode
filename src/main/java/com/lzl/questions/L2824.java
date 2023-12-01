@@ -21,20 +21,4 @@ public class L2824 {
         }
         return pair;
     }
-private int pair=0;
-    private void dfs(List<Integer> nums, int curVal, int size, int target,int start) {
-       if(curVal==target){
-           pair++;
-           return ;
-       }
-        for (int i = start; i < size; i++) {
-            if(curVal==Integer.MAX_VALUE){
-                curVal=nums.get(i);
-            }else{
-                curVal+=nums.get(i);
-            }
-            dfs(nums,curVal,size,target,start+1);
-
-        }
-    }
 }
