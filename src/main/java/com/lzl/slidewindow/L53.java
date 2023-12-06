@@ -15,57 +15,23 @@ package com.lzl.slidewindow;
  */
 public class L53 {
     public static void main(String[] args) {
-        System.out.println(new L53().maxSubArray(new int[]{5, 4, -1, 7, 8}));
+        System.out.println(new L53().maxSubArray(new int[]{5, 4, -3, 9}));
     }
 
     public int maxSubArray(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
-        }
-        if (nums.length == 1) {
-            return nums[0];
-        }
-        if (nums.length == 2) {
-            int i = nums[0] + nums[1];
-            if (i > nums[0] && i > nums[1]) {
-                return i;
-            }
-            return Math.max(nums[0], nums[1]);
-        }
-        int maxVal = 0;
-        for (int L = 1; L <= nums.length; L++) {
-            for (int i = 0; i < nums.length; i++) {
-                int j = L + i - 1;
-                if(j>=nums.length)break;
-                if (i == j) {
-                    maxVal = Math.max(maxVal, nums[i]);
-                    continue;
-                }
-                int sum = 0;
-                for (int k = i; k <= j; k++) {
-                    sum += nums[k];
-                }
-                maxVal = Math.max(maxVal, sum);
-
-            }
+        // 状态转移方程：
+        // f(i)=Math.max(f(i-1)+x,x);
+        // pre永远是以i下标结尾的元素序列的最大和
+        int maxVal = Integer.MIN_VALUE;
+        int pre = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            // 每次都拿pre+num后比较，如果小了，说明i-1之前的值全加起来比自己还要小，则最大和直接取自己
+            // 如果i-1之前的加上自己变得更大了，则取i-1的值加上自己，增大这个最大和
+            pre = Math.max(pre + num, num);
+            // 每次求完i的最大和就去更新全局最大和
+            maxVal = Math.max(maxVal, pre);
         }
         return maxVal;
-        // int left=0;
-        // int right=0;
-        // int winVal=0;
-        // int maxVal=0;
-        // while(right<nums.length){
-        //     int num = nums[right];
-        //     int t=winVal;
-        //     winVal+=num;
-        //     while(winVal<t){
-        //          maxVal = Math.max(t, maxVal);
-        //          winVal-=nums[left];
-        //          t=winVal;
-        //          left++;
-        //     }
-        //     right++;
-        // }
-        // return maxVal;
     }
 }
