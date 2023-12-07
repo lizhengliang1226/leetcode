@@ -28,7 +28,53 @@ public class L1466 {
                 new L1466().minReorder(6, new int[][]{new int[]{0, 1}, new int[]{1, 3}, new int[]{2, 3}, new int[]{4, 0}, new int[]{4, 5}}));
     }
 
+    /**
+     * 深度优先遍历，多加一个方向的判断，类似dp的思想从叶子节点往上不断求和计算，得到最终结果
+     *
+     * @param n
+     * @param connections
+     * @return
+     */
     public int minReorder(int n, int[][] connections) {
+        List<int[]>[] tree = new List[n];
+        for (int i = 0; i < n; i++) {
+            tree[i] = new ArrayList<>();
+        }
+        for (int[] road : connections) {
+            // 正向边用0，反向边用1
+            tree[road[0]].add(new int[]{road[1], 0});
+            tree[road[1]].add(new int[]{road[0], 1});
+        }
+        return dfs(0, -1, tree);
+    }
+
+    private int dfs(int cur, int fa, List<int[]>[] tree) {
+        int sum = 0;
+        for (int[] sub : tree[cur]) {
+            int son = sub[0];
+            int dir = sub[1];
+            if (son != fa) {
+                // 得到孩子节点需要转变的次数
+                int sunRes = dfs(son, cur, tree);
+                // 加上自身
+                sum += sunRes;
+                if (dir == 0) {
+                    // 如果当前这个子节点和自己的方向是正向（0），也就是父指向子，此时应该变化方向让子指向父，才能往上走到达0节点
+                    sum++;
+                }
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * 深度优先搜索+Hash表，速度极慢
+     *
+     * @param n
+     * @param connections
+     * @return
+     */
+    public int minReorder1(int n, int[][] connections) {
         List<Integer>[] tree = new List[n];
         for (int i = 0; i < n; i++) {
             tree[i] = new ArrayList<>();
@@ -40,16 +86,16 @@ public class L1466 {
             map.computeIfAbsent(road[0], k -> new HashSet<>()).add(road[1]);
 
         }
-        dfs(0, -1, tree, map);
+        dfs1(0, -1, tree, map);
         return count;
     }
 
     int count = 0;
 
-    private int dfs(int cur, int fa, List<Integer>[] tree, Map<Integer, Set<Integer>> dir) {
+    private int dfs1(int cur, int fa, List<Integer>[] tree, Map<Integer, Set<Integer>> dir) {
         for (Integer sub : tree[cur]) {
             if (sub != fa) {
-                int son = dfs(sub, cur, tree, dir);
+                int son = dfs1(sub, cur, tree, dir);
                 boolean contains = dir.getOrDefault(son, new HashSet<>()).contains(cur);
                 if (!contains) {
                     dir.computeIfAbsent(son, k -> new HashSet<>()).add(cur);
