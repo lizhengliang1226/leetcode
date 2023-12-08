@@ -22,11 +22,11 @@ public class L5 {
         int start = 0;
         int end = 0;
         for (int i = 0; i < length; i++) {
-            int l = extendPlain(s, i, i);
-            int l1 = extendPlain(s, i, i + 1);
-            int max = Math.max(l, l1);
+            int l1 = extendPlain(s, i, i);
+            int l2 = extendPlain(s, i, i + 1);
+            int max = Math.max(l1, l2);
             if (end - start < max) {
-                if (max == l1) {
+                if (max == l2) {
                     start = i - max / 2 + 1;
                 } else {
                     start = i - max / 2;
@@ -37,13 +37,13 @@ public class L5 {
         return s.substring(start, end);
     }
 
-    private int extendPlain(String s, int i, int i1) {
-        while (i >= 0 && i1 < s.length() && s.charAt(i) == s.charAt(i1)) {
-            i--;
-            i1++;
+    private int extendPlain(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
         }
-// 0 1 2 3 4 5 6 7 8 9
-        return i1 - (i) - 1;
+        // 在最后一次满足条件时会left--和right++，所以计算这个长度这里要减一
+        return right - left - 1;
     }
 
     public String longestPalindrome(String s) {
