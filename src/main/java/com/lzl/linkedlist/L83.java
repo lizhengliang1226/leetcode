@@ -29,20 +29,18 @@ public class L83 {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode p1 = new ListNode();
-        ListNode p2 = new ListNode();
-        p1 = head;
-        p2 = head;
-        p1 = p1.next;
-        while (p1 != null && p2 != null) {
-            if (p1.val == p2.val) {
-                p2.next = p1.next;
-                p1 = p1.next;
-            } else {
-                p1 = p1.next;
-                p2 = p2.next;
+        ListNode fast = new ListNode();
+        ListNode slow = new ListNode();
+        fast = head;
+        slow = head;
+        while (fast != null) {
+            if (fast.val != slow.val) {
+                slow.next = fast;
+                slow = slow.next;
             }
+            fast = fast.next;
         }
+        slow.next = null;
         return head;
     }
 }

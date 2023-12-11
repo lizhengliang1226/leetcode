@@ -17,6 +17,33 @@ public class L5 {
 //        System.out.println(longestPalindrome(s));
     }
 
+    public String longestPalindrome(String s) {
+        int start=0;
+        int max=Integer.MIN_VALUE;
+        for (int i = 0; i < s.length(); i++) {
+            int l1=extendPlain1(s,i,i);
+            int l2=extendPlain1(s,i,i+1);
+            int max1 = Math.max(l1, l2);
+            if(max1>max){
+                max=max1;
+                // 公式：不管max是单数还是双数，算出来都是正确的起始位置
+                // start=i-(max-1)/2;
+                start=i-(max1-1)/2;
+            }
+        }
+        return s.substring(start,start+max);
+    }
+
+    private int extendPlain1(String s, int left, int right) {
+        while(left>=0&&right<s.length()&&s.charAt(left)==s.charAt(right)){
+            left--;
+            right++;
+        }
+        // 满足条件前还会再进一次while，所以要减一
+        return right-left-1;
+    }
+
+
     public String longestPalindrome1(String s) {
         int length = s.length();
         int start = 0;
@@ -46,7 +73,7 @@ public class L5 {
         return right - left - 1;
     }
 
-    public String longestPalindrome(String s) {
+    public String longestPalindrome2(String s) {
         // base case 对于所有的单个字符，一定都是回文串
         int n = s.length();
         boolean[][] dp = new boolean[n][n];
