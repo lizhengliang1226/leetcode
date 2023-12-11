@@ -1,5 +1,8 @@
 package com.lzl.dp;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 /**
  * 1631. 最小体力消耗路径
  * 中等
@@ -19,67 +22,52 @@ package com.lzl.dp;
  */
 public class L1631 {
     public static void main(String[] args) {
-        System.out.println(new L1631().min(new int[][]{new int[]{1, 2, 2}, new int[]{3, 8, 2}, new int[]{5, 3, 5}}));
+        System.out.println(new L1631().minimumEffortPath(new int[][]{new int[]{1, 2, 2}, new int[]{3, 8, 2}, new int[]{5, 3, 5}}));
     }
 
-    public int min(int[][] heights) {
-        int rows = heights.length;
-        int cols = heights[0].length;
-        int[][] dp = new int[rows][cols];
-        // dp[rows - 1][cols - 1] = heights[rows - 1][cols - 1];
-        for (int i = rows - 2; i >= 0; i--) {
-            dp[i][cols - 1] = Math.max(dp[i + 1][cols - 1], Math.abs(heights[i][cols - 1] - heights[i + 1][cols - 1]));
-        }
-        for (int i = cols - 2; i >= 0; i--) {
-            dp[rows - 1][i] = Math.max(dp[rows - 1][i + 1], Math.abs(heights[rows - 1][i] - heights[rows - 1][i + 1]));
-        }
-        for (int i = rows - 2; i >= 0; i--) {
-            for (int j = cols - 2; j >= 0; j--) {
-                dp[i][j] = getMin(Math.max(dp[i + 1][j], Math.abs(heights[i + 1][j] - heights[i][j])),
-                                  Math.max((i - 1 >= 0 ? dp[i - 1][j] : Integer.MIN_VALUE),
-                                           Math.abs((i - 1 >= 0 ? heights[i - 1][j] : 0) - heights[i][j])),
-                                  Math.max(dp[i][j + 1], Math.abs(heights[i][j + 1] - heights[i][j])),
-                                  Math.max((j - 1 >= 0 ? dp[i][j - 1] : Integer.MIN_VALUE),
-                                           Math.abs((j - 1 >= 0 ? heights[i][j - 1] : 0) - heights[i][j])));
-            }
-        }
-        return dp[0][0];
-    }
+    int[][] dir = new int[][]{new int[]{-1, 0}, new int[]{0, -1}, new int[]{1, 0}, new int[]{0, 1}};
 
+    /**
+     * 二分查找，枚举0-999999（就是题目给的范围），认为这就是最短距离，然后去看有没有比这个更短的，如果有，就更新最短距离
+     * 广度优先遍历，得到上下左右四个方向的距离，取比当前mid小于等于的
+     * 结束之后，如果右下角的访问标志为真，则找到了一条路径，记录此时的mid为ans，缩小上界，没找到则缩小下界
+     * @param heights
+     * @return
+     */
     public int minimumEffortPath(int[][] heights) {
-        int rows = heights.length;
-        int cols = heights[0].length;
-        int[][][] dp = new int[rows][cols][5];
-        // dp[rows - 1][cols - 1] = 0;
-        // 0.上，1，下，2，左，3，右
-        for (int i = rows - 2; i >= 0; i--) {
-            int lastColIndex = cols - 1;
-            dp[i][lastColIndex][1] = Math.max(dp[i + 1][lastColIndex][1], Math.abs(heights[i][lastColIndex] - heights[i + 1][lastColIndex]));
-        }
-        for (int i = cols - 2; i >= 0; i--) {
-            int lastRowIndex = rows - 1;
-            dp[lastRowIndex][i][3] = Math.max(dp[lastRowIndex][i + 1][3], Math.abs(heights[lastRowIndex][i] - heights[lastRowIndex][i + 1]));
-        }
-        for (int i = rows - 2; i >= 0; i--) {
-            for (int j = cols - 2; j >= 0; j--) {
-                // 1
-                dp[i][j][1] = Math.max(dp[i + 1][j][4], Math.abs(heights[i + 1][j] - heights[i][j]));
-                // 0
-                dp[i][j][0] = Math.max((i - 1 >= 0 ? dp[i - 1][j][4] : Integer.MIN_VALUE),
-                                       Math.abs((i - 1 >= 0 ? heights[i - 1][j] : 0) - heights[i][j]));
-                // 3
-                dp[i][j][3] = Math.max(dp[i][j + 1][4], Math.abs(heights[i][j + 1] - heights[i][j]));
-                // 2
-                dp[i][j][2] = Math.max((j - 1 >= 0 ? dp[i][j - 1][4] : Integer.MIN_VALUE),
-                                       Math.abs((j - 1 >= 0 ? heights[i][j - 1] : 0) - heights[i][j]));
-                dp[i][j][4] = getMin(dp[i][j][0], dp[i][j][0], dp[i][j][0], dp[i][j][0]);
+        int m = heights.length;
+        int n = heights[0].length;
+        int left = 0;
+        int right = 999999;
+        Deque<int[]> q = new LinkedList<>();
+        int ans=0;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int[] start = new int[]{0, 0};
+            boolean[][] visited = new boolean[m][n];
+            q.offer(start);
+            visited[0][0] = true;
+            while (!q.isEmpty()) {
+                int[] poll = q.poll();
+                int x = poll[0];
+                int y = poll[1];
+                for (int i = 0; i < 4; i++) {
+                    int xx = x + dir[i][0];
+                    int yy = y + dir[i][1];
+                    if (xx >= 0 && xx < m && yy >= 0 && yy < n && !visited[xx][yy] && Math.abs(heights[x][y] - heights[xx][yy]) <= mid) {
+                        q.offer(new int[]{xx, yy});
+                        visited[xx][yy] = true;
+                    }
+                }
+            }
+            if (visited[m - 1][n - 1]) {
+                ans=mid;
+                right = mid - 1;
+            }else{
+                left = mid + 1;
             }
         }
-        return dp[0][0][4];
-    }
-
-    private int getMin(int a, int b, int c, int d) {
-        return Math.min(Math.min(a, b), Math.min(c, d));
+        return ans;
     }
 
 
