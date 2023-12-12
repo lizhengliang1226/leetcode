@@ -10,7 +10,7 @@ import com.lzl.util.Stack;
  */
 public class MonoStack {
     public static void main(String[] args) {
-        int[] a=new int[]{3,4,2,1};
+        int[] a=new int[]{1,2,4,3};
         int n = a.length;
         Stack<Integer> monoStack=new Stack<>();
         //从左往右遍历， 单调递增栈，找到左边第一个比当前元素大的元素
