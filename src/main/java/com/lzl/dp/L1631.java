@@ -60,6 +60,7 @@ public class L1631 {
                     }
                 }
             }
+            // 到达了右下角
             if (visited[m - 1][n - 1]) {
                 ans=mid;
                 right = mid - 1;
