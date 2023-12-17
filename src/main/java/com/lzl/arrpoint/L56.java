@@ -1,9 +1,8 @@
 package com.lzl.arrpoint;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 56. 合并区间
@@ -28,30 +27,61 @@ import java.util.List;
  */
 public class L56 {
     public static void main(String[] args) {
-        System.out.println(Arrays.deepToString(new L56().merge(new int[][]{new int[]{1, 2},new int[]{2, 4},new int[]{5, 6},new int[]{7, 8},new int[]{9, 10},})));
+        System.out.println(Arrays.deepToString(new L56().merge(new int[][]{new int[]{1, 2}, new int[]{2, 4}, new int[]{5, 6}, new int[]{7, 8}, new int[]{9, 10},})));
     }
+
+    /**
+     * 排序后，不断更新有重叠的右区间
+     *
+     * @param intervals
+     * @return
+     */
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[0] - o2[0];
+        Arrays.sort(intervals, (o1, o2) -> o1[0] - o2[0]);
+        int[][] res = new int[intervals.length + 1][2];
+        int index = -1;
+        for (int[] interval : intervals) {
+            if (index == -1 || res[index][1] < interval[0]) {
+                res[++index] = interval;
+            } else {
+                res[index][1] = Math.max(res[index][1], interval[1]);
             }
-        });
-        List<int[]> res = new ArrayList<>();
-        int max = -1;
-        int min = -1;
-        for (int i = 1; i < intervals.length; i++) {
-            int[] cur = intervals[i];
-            int[] prev = intervals[i - 1];
-            if (cur[0] <= max) {
-                // 合并
-                min = prev[0];
-                max = Math.max(cur[1], prev[1]);
-                continue;
-            }
-            int[] a = new int[]{min==-1?prev[0]:min, max==-1?prev[1]:max};
-            res.add(a);
         }
-        return res.toArray(new int[res.size()][2]);
+        return Arrays.copyOf(res, index + 1);
+    }
+
+    TreeMap<Integer, Integer> t = new TreeMap<>();
+
+    /**
+     * 使用treemap的特性来做区间合并
+     *
+     * @param intervals
+     * @return
+     */
+    public int[][] merge1(int[][] intervals) {
+        for (int[] interval : intervals) {
+            int left = interval[0];
+            int right = interval[1];
+            addInterval(left, right);
+        }
+        int[][] res = new int[t.size()][2];
+        int c = 0;
+        for (Map.Entry<Integer, Integer> e : t.entrySet()) {
+            res[c++] = new int[]{e.getKey(), e.getValue()};
+        }
+        return res;
+    }
+
+    private void addInterval(int left, int right) {
+        Map.Entry<Integer, Integer> e = t.floorEntry(right);
+        while (e != null && e.getValue() >= left) {
+            Integer l = e.getKey();
+            Integer r = e.getValue();
+            t.remove(l);
+            left = Math.min(l, left);
+            right = Math.max(r, right);
+            e = t.floorEntry(right);
+        }
+        t.put(left, right);
     }
 }
