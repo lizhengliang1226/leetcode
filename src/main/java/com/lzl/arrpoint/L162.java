@@ -19,7 +19,7 @@ package com.lzl.arrpoint;
  */
 public class L162 {
     public static void main(String[] args) {
-
+        System.out.println(new L162().findPeakElement(new int[]{1, 2, 3, 4, 5, 6, 4, 3, 2, 1}));
     }
 
     public int findPeakElement(int[] nums) {
