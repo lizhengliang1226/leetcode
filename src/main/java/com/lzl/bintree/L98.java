@@ -34,29 +34,12 @@ public class L98 {
         System.out.println(new L98().isValidBST(t5));
     }
     public boolean isValidBST(TreeNode root) {
-        if (root == null) {
-            return true;
-        }
-        if (root.left != null && root.right != null) {
-            if (root.left.val < root.val && root.right.val > root.val) {
-                return isValidBST(root.left) && isValidBST(root.right);
-            } else {
-                return false;
-            }
-        } else if (root.left == null && root.right != null) {
-            if (root.right.val > root.val) {
-                return isValidBST(root.right);
-            } else {
-                return false;
-            }
-        } else if (root.right == null && root.left != null) {
-            if (root.left.val < root.val) {
-                return isValidBST(root.left);
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return isValidBST(root,Long.MIN_VALUE,Long.MAX_VALUE);
+    }
+
+    private boolean isValidBST(TreeNode root, long left, long right) {
+        if(root==null)return true;
+        int x=root.val;
+        return x>left&&x<right&&isValidBST(root.left,left,x)&&isValidBST(root.right,x,right);
     }
 }
