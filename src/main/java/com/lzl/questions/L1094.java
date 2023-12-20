@@ -18,16 +18,17 @@ package com.lzl.questions;
  */
 public class L1094 {
     public boolean carPooling(int[][] trips, int capacity) {
-      int[] map=new int[1001];
-        for (int i = 0; i < trips.length; i++) {
-            int[] trip = trips[i];
-            map[trip[1]]+=trip[0];
-            map[trip[2]]-=trip[0];
+        int[] diff = new int[1001];
+        for (int[] trip : trips) {
+            int passengers = trip[0];
+            int from = trip[1];
+            int to = trip[2];
+            diff[from] += passengers;
+            diff[to] -= passengers;
         }
-        int sum=0;
-        for (int i = 0; i < map.length; i++) {
-            sum+=map[i];
-            if(sum>capacity)return false;
+        for (int i = 1; i < diff.length; i++) {
+            diff[i] += diff[i - 1];
+            if (diff[i] > capacity) return false;
         }
         return true;
     }
