@@ -64,7 +64,7 @@ public class T7 {
     }
 }
 
-class Student {
+ class Student {
     public String name = "";
     public Map<String, Integer> subjects = new HashMap<>();
 }
