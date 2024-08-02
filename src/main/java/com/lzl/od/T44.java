@@ -23,24 +23,16 @@ public class T44 {
         }
         int[] team = new int[5];
         boolean[] used = new boolean[10];
-        dfs(a, team, 0, 0, sum, used);
+        dfs(a, used, 0, 0, 0);
         System.out.println(min);
     }
 
-    private static void dfs(int[] a, int[] team, int start, int dep, int sum, boolean[] used) {
-        if (dep == 5) {
-            int s = team[0] + team[1] + team[2] + team[3] + team[4];
-            int b = Math.abs(sum - s);
-            min = Math.min(min, b);
+    private static void dfs(int[] a, boolean[] used, int idx, int ts1, int ts2) {
+        if (idx == 10) {
+            min = Math.min(min, Math.abs(ts1 - ts2));
             return;
         }
-        for (int i = 0; i < 10; i++) {
-            if (!used[i]) {
-                team[dep] = a[i];
-                used[i] = true;
-                dfs(a, team, start + 1, dep + 1, sum, used);
-                used[i] = false;
-            }
-        }
+        dfs(a, used, idx + 1, ts1, ts2 + a[idx]);
+        dfs(a, used, idx + 1, ts1 + a[idx], ts2);
     }
 }
