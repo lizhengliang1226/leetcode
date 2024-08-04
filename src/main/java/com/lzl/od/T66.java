@@ -47,7 +47,6 @@ public class T66 {
             for (int[] ints : channelList) {
                 int cap = ints[0];
                 int nums = ints[1];
-//                int need = g / cap;
                 int need = (int) Math.ceil(1.0 * g / cap);
                 if (nums >= need) {
                     nums -= need;
