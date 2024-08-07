@@ -16,19 +16,23 @@ package com.lzl.arrpoint;
  */
 public class L283 {
     public void moveZeroes(int[] nums) {
-        if (nums.length == 0) return;
-        if (nums.length == 1) return;
-        int fast = 0, slow = 0;
+        if (nums.length == 0) {
+            return;
+        }
+        if (nums.length == 1) {
+            return;
+        }
+        int fast = 0;
+        int low = 0;
         while (fast < nums.length) {
             if (nums[fast] != 0) {
-                // 023450123
-                nums[slow] = nums[fast];
-                slow++;
+                nums[low] = nums[fast];
+                low++;
             }
             fast++;
         }
-        while (slow < nums.length) {
-            nums[slow] = 0;
+        while (low < nums.length) {
+            nums[low++] = 0;
         }
     }
 }

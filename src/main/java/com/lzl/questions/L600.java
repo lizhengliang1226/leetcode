@@ -1,5 +1,8 @@
 package com.lzl.questions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 600. 不含连续1的非负整数
  * 困难
@@ -36,19 +39,42 @@ package com.lzl.questions;
  * @since 2024/08/05
  */
 public class L600 {
+   Map<Integer,Integer> m=new HashMap<>();
     public static void main(String[] args) {
-        int n = 100000000;
-        System.out.println(new L600().findIntegers(n));
+        int n = 80982165;
+        int count = 0;
+        for (int i = 0; i < 10000; i++) {
+            boolean b = (i & (i >> 1)) != 0;
+            if (!b) {
+                count++;
+
+                // System.out.println(i + "--" + Integer.toBinaryString(i) + (b ? "有" : ""));
+            }
+            if (i % 100 == 0) {
+                System.out.println();
+            }
+        }
+        System.out.println(count);
+        // System.out.println(new L600().findIntegers(n));
     }
 
     public int findIntegers(int n) {
-        int[] dp = new int[n + 1];
-        dp[0] = 1;
-        dp[1] = 2;
-        for (int i = 2; i <= n; i++) {
-            dp[i] = dp[i - 1] + cur(i);
+        if (n == 0) {
+            return 1;
         }
-        return dp[n];
+        if (n == 1) {
+            return 2;
+        }
+        // int[] dp = new int[n + 1];
+        // dp[0] = 1;
+        // dp[1] = 2;
+        int dp_i_1 = 2;
+        int dp_i = 0;
+        for (int i = 2; i <= n; i++) {
+            dp_i = dp_i_1 + cur(i);
+            dp_i_1 = dp_i;
+        }
+        return dp_i;
     }
 
     private int cur(int n) {
