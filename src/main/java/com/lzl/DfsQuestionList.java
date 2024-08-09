@@ -11,14 +11,38 @@ import java.util.*;
  * @author 17314
  */
 public class DfsQuestionList {
+    private final static DfsQuestionList DFS_QUESTION_LIST = new DfsQuestionList();
     private int[] x = new int[]{0, 0, 1, -1};
     private int[] y = new int[]{-1, 1, 0, 0};
-    private final static DfsQuestionList DFS_QUESTION_LIST = new DfsQuestionList();
-
+    private String res = "";
+    private int num = 0;
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
         DFS_QUESTION_LIST.solveNQueens(4);
+    }
+
+    private static void letterCombinations() {
+        System.out.println(DFS_QUESTION_LIST.letterCombinations("5674"));
+    }
+
+    private static void exist() {
+        System.out.println(DFS_QUESTION_LIST.exist(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCCED"));
+    }
+
+    private static void generateParenthesis() {
+        final List<String> abc = DFS_QUESTION_LIST.generateParenthesis(3);
+    }
+
+    private static void test4(DfsQuestionList dfsQuestionList) {
+    }
+
+    private static void traverse(ListNode node) {
+        while (node != null) {
+            System.out.print(node.val + ",");
+            node = node.next;
+        }
+        System.out.println();
     }
 
     /**
@@ -56,9 +80,7 @@ public class DfsQuestionList {
         return res;
     }
 
-
-    private void dfs15(List<List<String>> res, boolean[][] used, List<String> path,
-                       int[][] board, int n, int qn, int rstart, int cstart) {
+    private void dfs15(List<List<String>> res, boolean[][] used, List<String> path, int[][] board, int n, int qn, int rstart, int cstart) {
         if (qn == n) {
             List<String> p = new ArrayList<>();
             for (int i = 0; i < n; i++) {
@@ -72,7 +94,7 @@ public class DfsQuestionList {
                     }
                 }
                 p.add(sb.toString());
-//                log.info("第{}次{}", ff, Arrays.toString(board[i]));
+                //                log.info("第{}次{}", ff, Arrays.toString(board[i]));
             }
             res.add(p);
             return;
@@ -135,20 +157,6 @@ public class DfsQuestionList {
         return true;
     }
 
-    private static void letterCombinations() {
-        System.out.println(DFS_QUESTION_LIST.letterCombinations("5674"));
-    }
-
-    private static void exist() {
-        System.out.println(DFS_QUESTION_LIST.exist(new char[][]{{'A', 'B', 'C', 'E'},
-                {'S', 'F', 'C', 'S'}, {
-                'A', 'D', 'E', 'E'}}, "ABCCED"));
-    }
-
-    private static void generateParenthesis() {
-        final List<String> abc = DFS_QUESTION_LIST.generateParenthesis(3);
-    }
-
     /**
      * 35. 搜索插入位置
      * 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。
@@ -173,9 +181,15 @@ public class DfsQuestionList {
      */
     public int searchInsert(int[] nums, int target) {
         // 二分查找
-        if (target <= nums[0]) return 0;
-        if (target > nums[nums.length - 1]) return nums.length;
-        if (target == nums[nums.length - 1]) return nums.length - 1;
+        if (target <= nums[0]) {
+            return 0;
+        }
+        if (target > nums[nums.length - 1]) {
+            return nums.length;
+        }
+        if (target == nums[nums.length - 1]) {
+            return nums.length - 1;
+        }
         int l = 0;
         int r = nums.length - 1;
         while (l < r) {
@@ -188,7 +202,9 @@ public class DfsQuestionList {
                 return mid;
             }
         }
-        if (target > nums[l]) return l + 1;
+        if (target > nums[l]) {
+            return l + 1;
+        }
         return l;
     }
 
@@ -222,7 +238,7 @@ public class DfsQuestionList {
         StringBuilder path = new StringBuilder();
         final int l = s.length();
         dfs13(res, path, l, 0, s);
-//        System.out.println(Arrays.toString(res.toArray()));
+        //        System.out.println(Arrays.toString(res.toArray()));
         return res;
     }
 
@@ -311,12 +327,10 @@ public class DfsQuestionList {
         return false;
     }
 
-
     private boolean dfs11(char[][] board, String word, int r, int c, int wl, int wpos, int i, int j, boolean[][] used) {
         if (board[i][j] != word.charAt(wpos)) {
             // 找的过程中有不匹配的
-            print("在i=" + i + "j=" + j + "存在不匹配,字符位置k=" + wpos + ",字符是：c=" + word.charAt(
-                    wpos) + ",该位置是：board[" + i + "][" + j + "]=" + board[i][j] + "，结束查找返回");
+            print("在i=" + i + "j=" + j + "存在不匹配,字符位置k=" + wpos + ",字符是：c=" + word.charAt(wpos) + ",该位置是：board[" + i + "][" + j + "]=" + board[i][j] + "，结束查找返回");
             return false;
         } else if (wpos == wl - 1) {
             // 当前字符是相等的且位置已经到了最后
@@ -389,9 +403,9 @@ public class DfsQuestionList {
                 }
             }
         }
-//        for (int i = 0; i < r; i++) {
-//            System.out.println(Arrays.toString(board[i]));
-//        }
+        //        for (int i = 0; i < r; i++) {
+        //            System.out.println(Arrays.toString(board[i]));
+        //        }
     }
 
     private void dfs10(char[][] board, int r, int c, int i, int j) {
@@ -643,9 +657,6 @@ public class DfsQuestionList {
         return res;
     }
 
-    private String res = "";
-    private int num = 0;
-
     // 7 14 17 21 27 28 35 37 42 47 49 56 57 63 67 70 71 72 73
     // 74 75 76 77 78 79 84 87 91 97
     private void dfs6(int n, int k, StringBuilder sb, boolean[] used) {
@@ -656,7 +667,9 @@ public class DfsQuestionList {
             }
         }
         for (int i = 1; i <= n; i++) {
-            if (num == k) break;
+            if (num == k) {
+                break;
+            }
             if (!used[i - 1]) {
                 sb.append(i);
                 used[i - 1] = true;
@@ -699,7 +712,9 @@ public class DfsQuestionList {
     private void dfs5(Deque<Integer> path, int[] nums, List<List<Integer>> res, int l, int begin) {
         res.add(new ArrayList<>(path));
         for (int i = begin; i < l; i++) {
-            if (i > begin && nums[i] == nums[i - 1]) continue;
+            if (i > begin && nums[i] == nums[i - 1]) {
+                continue;
+            }
             path.addLast(nums[i]);
             dfs5(path, nums, res, l, i + 1);
             path.removeLast();
@@ -787,7 +802,9 @@ public class DfsQuestionList {
         }
         for (int i = begin; i <= n - (k - path.size()) + 1; i++) {
             int num = i;
-            if (i == n) break;
+            if (i == n) {
+                break;
+            }
             path.addLast(num);
             dfs3(n, k, path, res, i + 1);
             path.removeLast();
@@ -839,12 +856,7 @@ public class DfsQuestionList {
         return res;
     }
 
-    private void dfs2(int[] candidates,
-                      Deque<Integer> path,
-                      int target,
-                      int l,
-                      List<List<Integer>> res,
-                      int begin) {
+    private void dfs2(int[] candidates, Deque<Integer> path, int target, int l, List<List<Integer>> res, int begin) {
         // 目标值为0说明已找到，保存值
         if (target == 0) {
             res.add(new ArrayList<>(path));
@@ -853,9 +865,13 @@ public class DfsQuestionList {
         // 从begin开始遍历，就是为了之前选取过的数就不要再去取了，如果从0开始又会选到之前选过的数
         for (int i = begin; i < l; i++) {
             // 如果当前数减去后已经小于0了，后面的数就更不可能得到结果了
-            if (target - candidates[i] < 0) break;
+            if (target - candidates[i] < 0) {
+                break;
+            }
             // 同一层后面的与前面相同，那一定使用过了会重复
-            if (i > begin && candidates[i - 1] == candidates[i]) continue;
+            if (i > begin && candidates[i - 1] == candidates[i]) {
+                continue;
+            }
             // 上面两个都没结束，说明该数被减后大于0且还没被使用过且与前一个数不相同也就是不会重复
             path.addLast(candidates[i]);
             dfs2(candidates, path, target - candidates[i], l, res, i + 1);
@@ -1030,7 +1046,6 @@ public class DfsQuestionList {
         // 这个位置说明找不到符合条件的，然后就会返回，走到上面那行
     }
 
-
     /**
      * 38. 外观数列
      * 给定一个正整数 n ，输出外观数列的第 n 项。
@@ -1137,15 +1152,14 @@ public class DfsQuestionList {
                     int index = c - '0' - 1;
                     rows[i][index]++;
                     cols[j][index]++;
-                    sub[i/3][j/3][index]++;
-                    if (rows[i][index] > 1 || cols[j][index] > 1 || sub[i/3][j/3][index] > 1) return false;
+                    sub[i / 3][j / 3][index]++;
+                    if (rows[i][index] > 1 || cols[j][index] > 1 || sub[i / 3][j / 3][index] > 1) {
+                        return false;
+                    }
                 }
             }
         }
         return true;
-    }
-
-    private static void test4(DfsQuestionList dfsQuestionList) {
     }
 
     /**
@@ -1219,7 +1233,9 @@ public class DfsQuestionList {
      */
     public int myAtoi(String s) {
         s = s.trim();
-        if (s.length() == 0) return 0;
+        if (s.length() == 0) {
+            return 0;
+        }
         if (!Character.isDigit(s.charAt(0)) && s.charAt(0) != '+' && s.charAt(0) != '-') {
             return 0;
         }
@@ -1250,8 +1266,12 @@ public class DfsQuestionList {
      * @return
      */
     public boolean isPalindrome(int x) {
-        if (x == 0) return true;
-        if (x < 0) return false;
+        if (x == 0) {
+            return true;
+        }
+        if (x < 0) {
+            return false;
+        }
         if (x % 10 == 0) {
             return false;
         }
@@ -1268,36 +1288,6 @@ public class DfsQuestionList {
         return x == res || x == res / 10;
     }
 
-    /**
-     * 11. 盛最多水的容器
-     * 给你 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。
-     * 在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。
-     * 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
-     * <p>
-     * 说明：你不能倾斜容器。
-     * 使用双指针
-     *
-     * @param height
-     * @return
-     */
-    public int maxArea(int[] height) {
-        if (height == null || height.length == 0) return 0;
-        int l = 0;
-        int r = height.length - 1;
-        int mr = 0;
-        while (l < r) {
-            int ar = Math.min(height[l], height[r]) * (r - l);
-            if (ar > mr) {
-                mr = ar;
-            }
-            if (height[l] > height[r]) {
-                r--;
-            } else {
-                l++;
-            }
-        }
-        return mr;
-    }
 
     /**
      * 12. 整数转罗马数字
@@ -1429,7 +1419,9 @@ public class DfsQuestionList {
      * @return
      */
     public String longestCommonPrefix(String[] strs) {
-        if (strs == null || strs.length == 0) return "";
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
         int length = strs[0].length();
         int count = strs.length;
         for (int i = 0; i < length; i++) {
@@ -1443,64 +1435,7 @@ public class DfsQuestionList {
         return strs[0];
     }
 
-    /**
-     * 15. 三数之和
-     * 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c
-     * ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
-     * <p>
-     * 注意：答案中不可以包含重复的三元组。
-     * <p>
-     * <p>
-     * <p>
-     * 示例 1：
-     * <p>
-     * 输入：nums = [-1,0,1,2,-1,-4]
-     * 输出：[[-1,-1,2],[-1,0,1]]
-     * 示例 2：
-     * <p>
-     * 输入：nums = []
-     * 输出：[]
-     * 示例 3：
-     * <p>
-     * 输入：nums = [0]
-     * 输出：[]
-     *
-     * @param nums
-     * @return
-     */
-    public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> list = new ArrayList(16);
-        //去除部分重复
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length; i++) {
-            //一重循环，去重
-            if (i > 0 && nums[i] == nums[i - 1]) {
-                continue;
-            }
-            //定义target
-            int a = -nums[i];
-            //定义右指针
-            int three = nums.length - 1;
-            for (int j = i + 1; j < nums.length; j++) {
-                //二重循环，去重
-                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
-                int b = nums[j];
-                //左右指针不断移动直到找到或者相等退出循环
-                while (j < three && b + nums[three] > a) three--;
-                //如果是相等说明没找到，结束此次循环
-                if (j == three) break;
-                //否则找到了，添加进去
-                if (b + nums[three] == a) {
-                    List<Integer> list1 = new ArrayList<>();
-                    list1.add(nums[i]);
-                    list1.add(nums[j]);
-                    list1.add(nums[three]);
-                    list.add(list1);
-                }
-            }
-        }
-        return list;
-    }
+
 
     /**
      * 16. 最接近的三数之和
@@ -1521,11 +1456,15 @@ public class DfsQuestionList {
      * @return
      */
     public int threeSumClosest(int[] nums, int target) {
-        if (nums == null || nums.length == 0) return 0;
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
         Arrays.sort(nums);
         int best = 1000000000;
         for (int i = 0; i < nums.length; i++) {
-            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
             int t1 = nums[i];
             int r = nums.length - 1;
             int j = i + 1;
@@ -1567,12 +1506,14 @@ public class DfsQuestionList {
      * @return
      */
     public List<String> letterCombinations(String digits) {
-        if (digits.length() == 0) return new ArrayList<>();
+        if (digits.length() == 0) {
+            return new ArrayList<>();
+        }
         int l = digits.length();
         StringBuilder path = new StringBuilder();
         List<String> res = new ArrayList<>();
         dfs12(digits, l, path, res, 0);
-//        System.out.println(Arrays.toString(res.toArray()));
+        //        System.out.println(Arrays.toString(res.toArray()));
         return res;
         /**if (digits == null | digits.equals("")) return new ArrayList<>();
          List<List<String>> list = new ArrayList<>(16);
@@ -1653,18 +1594,26 @@ public class DfsQuestionList {
      * @return
      */
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        if (nums == null || nums.length == 0) return null;
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
         List<List<Integer>> list = new ArrayList<>(16);
         int n = nums.length;
         Arrays.sort(nums);
         for (int i = 0; i < n; i++) {
-            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
             for (int j = i + 1; j < n; j++) {
-                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
                 int r = n - 1;
                 int tsum = nums[i] + nums[j];
                 for (int k = j + 1; k < n; k++) {
-                    if (k > j + 1 && nums[k] == nums[k - 1]) continue;
+                    if (k > j + 1 && nums[k] == nums[k - 1]) {
+                        continue;
+                    }
                     while (k < r && tsum + nums[k] + nums[r] > target) {
                         r--;
                     }
@@ -1699,22 +1648,22 @@ public class DfsQuestionList {
      */
     public ListNode removeNthFromEnd(ListNode head, int n) {
         //两趟
-//        ListNode h=head;
-//        int count=0;
-//        for(ListNode cur=head;cur!=null;cur=cur.next){
-//            count++;
-//        }
-//        if(count-n==0){
-//            return h.next;
-//        }
-//        int index=0;
-//        for(ListNode cur=head;cur!=null;cur=cur.next){
-//            if((index+1)==count-n){
-//                cur.next=cur.next.next;
-//            }
-//            index++;
-//        }
-//        return h;
+        //        ListNode h=head;
+        //        int count=0;
+        //        for(ListNode cur=head;cur!=null;cur=cur.next){
+        //            count++;
+        //        }
+        //        if(count-n==0){
+        //            return h.next;
+        //        }
+        //        int index=0;
+        //        for(ListNode cur=head;cur!=null;cur=cur.next){
+        //            if((index+1)==count-n){
+        //                cur.next=cur.next.next;
+        //            }
+        //            index++;
+        //        }
+        //        return h;
 
         //栈实现遍历一趟
         com.lzl.util.Stack<ListNode> storage = new com.lzl.util.Stack<>();
@@ -1758,21 +1707,28 @@ public class DfsQuestionList {
      * @return
      */
     public boolean isValid(String s) {
-        if (s == null || s.equals("")) return true;
-        if (s.length() % 2 != 0) return false;
+        if (s == null || s.equals("")) {
+            return true;
+        }
+        if (s.length() % 2 != 0) {
+            return false;
+        }
         com.lzl.util.Stack<Character> stack = new Stack();
         for (int i = 0; i < s.length(); i++) {
             final char c = s.charAt(i);
             if (c == '(' || c == '[' || c == '{') {
                 stack.push(c);
             } else {
-                if (stack.isEmpty()) return false;
-                if (!stack.pop().equals(getL(c))) return false;
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                if (!stack.pop().equals(getL(c))) {
+                    return false;
+                }
             }
         }
         return stack.isEmpty();
     }
-
 
     private char getL(char c) {
         switch (c) {
@@ -1849,11 +1805,11 @@ public class DfsQuestionList {
 
         //  之前写的方法
         //        List<String> result = new ArrayList<>(16);
-//        if (n == 0) {
-//            return result;
-//        }
-//        backtrack("", n, n, result);
-//        return result;
+        //        if (n == 0) {
+        //            return result;
+        //        }
+        //        backtrack("", n, n, result);
+        //        return result;
     }
 
     private void dfs14(StringBuilder path, int ln, int rn, List<String> result, int n) {
@@ -1928,21 +1884,13 @@ public class DfsQuestionList {
     public ListNode mergeKLists(ListNode[] lists) {
         ListNode head = null;
         for (int i = 0; i < lists.length; i++) {
-//            System.out.println(lists[i]);
+            //            System.out.println(lists[i]);
             if (lists[i] != null) {
                 head = mergeTwoLists(lists[i], head);
             }
         }
-//        traverse(head);
+        //        traverse(head);
         return head;
-    }
-
-    private static void traverse(ListNode node) {
-        while (node != null) {
-            System.out.print(node.val + ",");
-            node = node.next;
-        }
-        System.out.println();
     }
 
     /**
@@ -1986,8 +1934,12 @@ public class DfsQuestionList {
      * @return
      */
     public ListNode reverseKGroup(ListNode head, int k) {
-        if (head == null || head.next == null) return head;
-        if (k < 2) return head;
+        if (head == null || head.next == null) {
+            return head;
+        }
+        if (k < 2) {
+            return head;
+        }
         ListNode prev, end, dump;
         dump = new ListNode();
         dump.next = head;
@@ -2008,63 +1960,63 @@ public class DfsQuestionList {
             end = prev;
         }
         return dump.next;
-//        if(head==null||head.next==null)return head;
-//        if(k<2)return head;
-//        ListNode rh=head;
-//        Stack<ListNode> stack=new Stack();
-//        ListNode newH=new ListNode();
-//        ListNode h=newH;
-//        int len=0;
-//        ListNode lhead=head;
-//        while(lhead!=null){
-//            len++;
-//            lhead=lhead.next;
-//        }
-//        int count=0;
-//        if(len==k){
-//            return getReverseListNode(head);
-//        }
-//        if(len%k==0){
-//            do {
-//                while(count != k) {
-//                    stack.push(head);
-//                    head = head.next;
-//                    count++;
-//                }
-//                count = 0;
-//                for(int i = 0; i < k; i++) {
-//                    ListNode ele = stack.pop();
-//                    ele.next = null;
-//                    newH.next = ele;
-//                    newH = ele;
-//                }
-//            } while(head != null);
-//        }else{
-//            do {
-//                while(count != k && head != null) {
-//                    stack.push(head);
-//                    head = head.next;
-//                    count++;
-//                }
-//                if(head==null)break;
-//                count = 0;
-//                for(int i = 0; i < k; i++) {
-//                    ListNode ele = stack.pop();
-//                    ele.next = null;
-//                    newH.next = ele;
-//                    newH = ele;
-//                }
-//            } while(head != null);
-//            if(!stack.isEmpty()){
-//                ListNode last=null;
-//                while(!stack.isEmpty()){
-//                    last = stack.pop();
-//                }
-//                newH.next = last;
-//            }
-//        }
-//
-//        return h.next;
+        //        if(head==null||head.next==null)return head;
+        //        if(k<2)return head;
+        //        ListNode rh=head;
+        //        Stack<ListNode> stack=new Stack();
+        //        ListNode newH=new ListNode();
+        //        ListNode h=newH;
+        //        int len=0;
+        //        ListNode lhead=head;
+        //        while(lhead!=null){
+        //            len++;
+        //            lhead=lhead.next;
+        //        }
+        //        int count=0;
+        //        if(len==k){
+        //            return getReverseListNode(head);
+        //        }
+        //        if(len%k==0){
+        //            do {
+        //                while(count != k) {
+        //                    stack.push(head);
+        //                    head = head.next;
+        //                    count++;
+        //                }
+        //                count = 0;
+        //                for(int i = 0; i < k; i++) {
+        //                    ListNode ele = stack.pop();
+        //                    ele.next = null;
+        //                    newH.next = ele;
+        //                    newH = ele;
+        //                }
+        //            } while(head != null);
+        //        }else{
+        //            do {
+        //                while(count != k && head != null) {
+        //                    stack.push(head);
+        //                    head = head.next;
+        //                    count++;
+        //                }
+        //                if(head==null)break;
+        //                count = 0;
+        //                for(int i = 0; i < k; i++) {
+        //                    ListNode ele = stack.pop();
+        //                    ele.next = null;
+        //                    newH.next = ele;
+        //                    newH = ele;
+        //                }
+        //            } while(head != null);
+        //            if(!stack.isEmpty()){
+        //                ListNode last=null;
+        //                while(!stack.isEmpty()){
+        //                    last = stack.pop();
+        //                }
+        //                newH.next = last;
+        //            }
+        //        }
+        //
+        //        return h.next;
     }
 
     /**
@@ -2084,19 +2036,19 @@ public class DfsQuestionList {
             cur = head.next;
         }
         return dump.next;
-//        Stack<ListNode> s=new Stack();
-//        ListNode l=new ListNode();
-//        ListNode head=l;
-//        for(ListNode h=head;h!=null;h=h.next){
-//            s.push(h);
-//        }
-//        while(!s.isEmpty()){
-//            ListNode pop = s.pop();
-//            pop.next=null;
-//            l.next=pop;
-//            l=pop;
-//        }
-//        return head.next;
+        //        Stack<ListNode> s=new Stack();
+        //        ListNode l=new ListNode();
+        //        ListNode head=l;
+        //        for(ListNode h=head;h!=null;h=h.next){
+        //            s.push(h);
+        //        }
+        //        while(!s.isEmpty()){
+        //            ListNode pop = s.pop();
+        //            pop.next=null;
+        //            l.next=pop;
+        //            l=pop;
+        //        }
+        //        return head.next;
     }
 
     /**
@@ -2109,7 +2061,9 @@ public class DfsQuestionList {
      * @return 移除重复元素后数组的大小
      */
     public int removeDuplicates(int[] nums) {
-        if (nums.length < 2) return nums.length;
+        if (nums.length < 2) {
+            return nums.length;
+        }
         int slow = 1;
         //快慢指针，快指针遍历1-n，当相邻元素不相同则赋值i到slow的位置，slow+1，最后返回slow;
         for (int i = 1; i < nums.length; i++) {
@@ -2134,7 +2088,9 @@ public class DfsQuestionList {
      * @return 移除后数组的大小
      */
     public int removeElement(int[] nums, int val) {
-        if (nums == null || nums.length == 0) return 0;
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
         int fast = 0;
         int slow = 0;
         for (; fast < nums.length; fast++) {
@@ -2242,7 +2198,8 @@ public class DfsQuestionList {
         digit:==>-1
         -5
         * */
-        while (div >= dir << digit) digit++;
+        while (div >= dir << digit)
+            digit++;
         System.out.println("digit: " + digit);  //16>3*2*2*2  digit=3
         //之后开始计算
         while (div >= dir) {
@@ -2262,8 +2219,12 @@ public class DfsQuestionList {
             System.out.println("digit:==>" + digit);
         }
         res = sign ? -res : res;
-        if (res > Integer.MAX_VALUE) return Integer.MAX_VALUE;
-        if (res < Integer.MIN_VALUE) return Integer.MIN_VALUE;
+        if (res > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        if (res < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        }
         return (int) res;
     }
 
@@ -2279,7 +2240,7 @@ public class DfsQuestionList {
      * @param nums 数组
      */
     public void nextPermutation(int[] nums) {
-//        LeetCodeUtil.traverseAry(nums);
+        //        LeetCodeUtil.traverseAry(nums);
         int flag = 1;
         for (int i = nums.length - 1; i >= 1; i--) {
             //找到较小的数
@@ -2303,7 +2264,7 @@ public class DfsQuestionList {
         if (flag == 1) {
             reverse(nums, 0);
         }
-//        LeetCodeUtil.traverseAry(nums);
+        //        LeetCodeUtil.traverseAry(nums);
     }
 
     private void reverse(int[] nums, int i) {

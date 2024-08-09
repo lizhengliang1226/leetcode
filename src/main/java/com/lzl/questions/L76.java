@@ -56,6 +56,5 @@ public class L76 {
             }
         }
         return LEN == Integer.MAX_VALUE ? "" : s.substring(start, start + LEN);
-
     }
 }

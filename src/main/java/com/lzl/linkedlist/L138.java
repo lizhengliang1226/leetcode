@@ -56,7 +56,9 @@ public class L138 {
     }
 
     public Node copyRandomList(Node head) {
-        if (head == null) return null;
+        if (head == null) {
+            return null;
+        }
         if (head.next == null) {
             Node node = new Node(head.val);
             if (head.random != null) {
@@ -72,44 +74,51 @@ public class L138 {
     /**
      * 递归的方法
      *
-     * @param head
+     * @param cur
      * @param copy
      */
-    private void dfs(Node head, Node copy) {
-        if (head == null) return;
+    private void dfs(Node cur, Node copy) {
+        if (cur == null) {
+            return;
+        }
         // 处理next
-        copy.next = visited.containsKey(head) ? visited.get(head) : new Node(head.val);
-        visited.put(head, copy.next);
+        copy.next = visited.containsKey(cur) ? visited.get(cur) : new Node(cur.val);
+        // 维护新旧映射关系
+        visited.put(cur, copy.next);
         // 处理random
-        Node random = head.random;
+        Node random = cur.random;
         if (random != null) {
-            copy.next.random = visited.containsKey(random) ? visited.get(random) : (random == head ? copy.next : new Node(random.val));
-            visited.put(head.random, copy.next.random);
+            copy.next.random = visited.containsKey(random) ? visited.get(random) : (random == cur ? copy.next : new Node(random.val));
+            // 维护新旧随机节点映射关系
+            visited.put(cur.random, copy.next.random);
         }
         copy = copy.next;
-        dfs(head.next, copy);
+        dfs(cur.next, copy);
     }
 
     /**
-     * 迭代的方法
+     * 另一种方法，迭代的方法
+     *
      * @param head
      * @return
      */
     private Node copyRandomList1(Node head) {
-        if (head == null) return null;
+        if (head == null) {
+            return null;
+        }
 
         // 创建一个HashMap来存储访问过的节点和对应的复制节点
-        HashMap<Node, Node> visited = new HashMap<>();
+        Map<Node, Node> visited = new HashMap<>();
 
         // 创建原始链表的头节点和复制链表的头节点
         Node original = head;
-        Node copy = new Node(original.val);
+        Node sentinel = new Node(original.val);
 
         // 将原始链表的头节点和复制链表的头节点放入visited中，建立映射关系
-        visited.put(original, copy);
+        visited.put(original, sentinel);
 
         // 复制链表的当前节点
-        Node copyCurrent = copy;
+        Node copyCurrent = sentinel;
 
         // 遍历原始链表
         while (original != null) {
@@ -144,6 +153,7 @@ public class L138 {
             copyCurrent = copyCurrent.next;
         }
 
-        return copy;
+        return sentinel;
     }
+
 }

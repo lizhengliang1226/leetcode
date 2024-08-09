@@ -14,7 +14,7 @@ package com.lzl.slidewindow;
  */
 public class L3 {
     public static void main(String[] args) {
-        System.out.println(new L3().lengthOfLongestSubstring("aab"));
+        System.out.println(new L3().lengthOfLongestSubstring("cdd"));
     }
 
     public int lengthOfLongestSubstring(String s) {
@@ -26,20 +26,24 @@ public class L3 {
         int[] window = new int[1000];
         // 控制窗口的缩放
         int flag = 0;
+        char[] chars = s.toCharArray();
         while (right < s.length()) {
-            char c = s.charAt(right);
-            // 窗口缩小的判断条件，如果某个字符次数超过了1，则要开始缩小窗口
-            if (window[c] != 0) {
+            char c = chars[right];
+            window[c]++;
+            // 出现重复字符，需要缩小窗口
+            if (window[c] > 1) {
                 flag = 1;
+            } else {
+                // 否则计算当前最大
+                max = Math.max(max, right - left + 1);
             }
-            window[c] += 1;
             while (flag == 1) {
-                // 计算当前最大
-                max = Math.max(max, right - left);
-                char c1 = s.charAt(left);
-                window[c1] -= 1;
-                // 当窗口中的字符数缩小到了1，则没有重复字符了，那就继续扩大窗口
-                if (window[c1] == 1) {
+                char d = chars[left];
+                window[d]--;
+                // 缩小后判断是否不再重复
+                if (window[c] == 1) {
+                    // 计算最大
+                    max = Math.max(max, right - left);
                     flag = 0;
                 }
                 left++;
