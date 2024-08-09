@@ -19,14 +19,18 @@ import java.util.Arrays;
 public class L41 {
     public static void main(String[] args) {
 
+        int[] nums = {2, 1};
+        int result = new L41().firstMissingPositive(nums);
+        System.out.println(result);
     }
 
     /**
      * 官方解法
+     *
      * @param nums
      * @return
      */
-    public int firstMissingPositive(int[] nums) {
+    public int firstMissingPositive2(int[] nums) {
         int n = nums.length;
         // 生成一种带标记的hash表
         for (int i = 0; i < n; i++) {
@@ -52,6 +56,37 @@ public class L41 {
         // 如果上面没返回，说明所有的标记都打了，则全部都有，那就返回N+1
         return n + 1;
         // 注意：那些在第一步被设置为N+1的值也会被存在的值打上标记的
+    }
+
+    public int firstMissingPositive(int[] nums) {
+        int len = nums.length;
+        // 遍历，把不在[1,len]的都置为len+1
+        for (int i = 0; i < len; i++) {
+            if (nums[i] < 1 || nums[i] > len) {
+                nums[i] = len + 1;
+            }
+        }
+        // 遍历，把对应位置的值置为负数
+        for (int i = 0; i < len; i++) {
+            // 打标记的位置
+            int index = Math.abs(nums[i]);
+            // 前一个位置在索引范围内
+            if (index - 1 >= 0 && index - 1 <= len - 1) {
+                // 未被标记过
+                if (nums[index - 1] > 0) {
+                    // 打标记
+                    nums[index - 1] = -nums[index - 1];
+                }
+            }
+        }
+        // 遍历，一旦有没打标记的，则直接返回位置加1
+        for (int i = 0; i < len; i++) {
+            if (nums[i] > 0) {
+                return i + 1;
+            }
+        }
+        // 没有则返回len+1
+        return len + 1;
     }
 
     /**
