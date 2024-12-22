@@ -8,6 +8,7 @@ package com.lzl.util;
 
 public class TreeNode {
     public int val;
+    public int size;
     public TreeNode left;
     public TreeNode right;
 
