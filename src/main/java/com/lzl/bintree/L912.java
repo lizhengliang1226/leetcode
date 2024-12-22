@@ -50,9 +50,7 @@ public class L912 {
     }
 
     private void merge(int[] nums, int lo, int mid, int hi) {
-        for (int i = lo; i <= hi; i++) {
-            temp[i] = nums[i];
-        }
+        if (hi + 1 - lo >= 0) System.arraycopy(nums, lo, temp, lo, hi + 1 - lo);
         int i = lo, j = mid + 1;
         for (int k = lo; k <= hi; k++) {
             if (i == mid + 1) {
